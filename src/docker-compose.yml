@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  joballey_pg:
+    image: postgres
+    networks:
+      - joballey_network
+
+  joballey_mssql:
+    image: mcr.microsoft.com/mssql/server
+    networks:
+      - joballey_network
+  
+  distributedcache:
+    image: redis
+    networks:
+      - joballey_network
+
+  rabbitmq:
+    image: rabbitmq:3.11.7-management
+    networks:
+      - joballey_network
+
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapis
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity.API/Dockerfile
+
+volumes:
+  postgres_joballey_pg:
+
+networks:
+  joballey_network:
+    driver: bridge
+
+
+
+

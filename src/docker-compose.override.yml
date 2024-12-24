@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+  joballey_pg:
+    container_name: joballey_pg
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_joballey_pg:/var/lib/postgresql/data
+    networks:
+      - joballey_network
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: host-queue
+    volumes:
+      - ./.containers/queue/data/:/var/lib/rabbitmq
+      - ./.containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - joballey_network
+  distributedcache:
+    container_name: distributedcache
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - joballey_network
+  joballey_mssql:
+    container_name: joballey_mssql
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=.abcABC123#
+    - MSSQL_DATABASE=joballey_mssql
+    restart: always
+    ports:
+      - "1433:1433"
+    networks:
+      - joballey_network
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "8080"
+      - "8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+networks:
+  joballey_network:
+    driver: bridge
+
+volumes:
+  postgres_joballey_pg:
+  mssql_data:  
