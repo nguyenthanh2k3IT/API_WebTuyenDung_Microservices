@@ -1,5 +1,6 @@
 ﻿namespace Identity.API.Data;
 
+[Table("tb_companies")]
 public class CompanyInfo : BaseEntity<Guid>
 {
     public string Wallpaper { get; set; } = string.Empty;

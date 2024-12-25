@@ -1,5 +1,6 @@
 ﻿namespace Identity.API.Data;
 
+[Table("tb_sizes")]
 public class Size : BaseEntity<Guid>
 {
     public string Name { get; set; }

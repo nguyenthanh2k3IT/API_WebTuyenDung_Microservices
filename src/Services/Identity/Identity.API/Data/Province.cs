@@ -1,5 +1,6 @@
 ﻿namespace Identity.API.Data;
 
+[Table("tb_provinces")]
 public class Province : BaseEntity<Guid>
 {
     public string Name { get; set; }

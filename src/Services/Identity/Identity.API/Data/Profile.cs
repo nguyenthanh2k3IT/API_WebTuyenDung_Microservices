@@ -1,5 +1,6 @@
 ﻿namespace Identity.API.Data;
 
+[Table("tb_profiles")]
 public class Profile : BaseEntity<Guid>
 {
     public string Name { get; set; }
