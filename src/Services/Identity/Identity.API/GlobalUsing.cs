@@ -13,3 +13,7 @@ global using BuildingBlock.Utilities;
 global using FluentValidation;
 global using Identity.API.Data;
 global using AutoMapper;
+global using BuildingBlock.Core.Abstractions;
+global using BuildingBlock.Core.Request;
+global using AutoMapper.QueryableExtensions;
+global using BuildingBlock.Core.Paging;
