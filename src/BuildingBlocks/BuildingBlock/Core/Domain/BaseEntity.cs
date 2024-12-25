@@ -39,7 +39,12 @@ public class BaseEntity<TKey>
 			var random = new Random();
 			return (TKey)(object)random.Next(10000, 99999);
 		}
+        else if (typeof(TKey).IsEnum)
+        {
+            var enumValues = Enum.GetValues(typeof(TKey));
+            return (TKey)enumValues.GetValue(0)!;
+        }
 
-		throw new InvalidOperationException("Unsupported ID type");
+        throw new InvalidOperationException("Unsupported ID type");
 	}
 }

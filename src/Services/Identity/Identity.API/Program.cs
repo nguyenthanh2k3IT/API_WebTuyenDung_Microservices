@@ -1,3 +1,6 @@
+using BuildingBlock.Installers;
+using Identity.API.Data;
+using System.Reflection;
 
 namespace Identity.API
 {
@@ -6,31 +9,42 @@ namespace Identity.API
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+            var environment = builder.Configuration.GetSection("HostSettings")["Environment"];
 
-			// Add services to the container.
-
-			builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            });
+            builder.Services.AddControllers();
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
-			var app = builder.Build();
+            #region BuildingBlock
+            builder.InstallSerilog();
+            builder.Services.InstallSwagger("v1", "JOB ALLEY API Identity");
+            builder.Services.InstallCORS();
+            builder.Services.InstallAuthentication();
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            #endregion
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+            #region DataContext
+            var cnStr = builder.Configuration.GetConnectionString("Database");
+            builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(cnStr));
+            #endregion
 
-			app.UseHttpsRedirection();
+            var app = builder.Build();
 
-			app.UseAuthorization();
+            app.UseSwaggerService();
+            app.UseCors();
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.MapControllers();
+            app.MigrationAutoUpdate<DataContext>();
 
-
-			app.MapControllers();
-
-			app.Run();
+            app.Run();
 		}
 	}
 }

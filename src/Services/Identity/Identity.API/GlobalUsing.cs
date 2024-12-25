@@ -1,0 +1,9 @@
+﻿global using BuildingBlock.Core.Domain;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using BuildingBlock.Core.WebApi;
+global using Microsoft.AspNetCore.Mvc;
+global using BuildingBlock.Core.Constants;
+global using BuildingBlock.Core.Enums;
+global using System.Text.Json.Serialization;
+global using System.ComponentModel.DataAnnotations;
+global using Microsoft.EntityFrameworkCore;
