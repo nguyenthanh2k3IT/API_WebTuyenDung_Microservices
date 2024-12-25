@@ -9,4 +9,5 @@ public class CompanyInfo : BaseEntity<Guid>
     public User User { get; set; }
     public Guid? SizeId { get; set; }
     public Size? Size { get; set; }
+    public ICollection<Province> Provinces { set; get; }
 }

@@ -23,4 +23,5 @@ public class User : BaseEntity<Guid>
 	public ICollection<OTP>? OTPs { set; get; }
 	public ICollection<Notification>? Notifications { set; get; }
     public ICollection<Profile>? Profiles { set; get; }
+    public ICollection<CoverLetter>? CoverLetters { set; get; }
 }
