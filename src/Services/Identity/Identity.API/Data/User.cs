@@ -13,6 +13,7 @@ public class User : BaseEntity<Guid>
 	public string Phone { get; set; } = string.Empty;
 	public string Fullname { get; set; } = string.Empty;
 	public string? Avatar { get; set; } = string.Empty;
+	public CompanyInfo? Company { get; set; }
 	public RoleEnum? RoleId { get; set; }
 	public Role? Role { get; set; }
 	public UserStatusEnum? StatusId { get; set; }
@@ -21,4 +22,5 @@ public class User : BaseEntity<Guid>
 	public ICollection<HubConnection>? HubConnections { set; get; }
 	public ICollection<OTP>? OTPs { set; get; }
 	public ICollection<Notification>? Notifications { set; get; }
+    public ICollection<Profile>? Profiles { set; get; }
 }
