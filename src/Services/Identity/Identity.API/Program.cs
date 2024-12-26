@@ -1,12 +1,15 @@
 using BuildingBlock.Installers;
 using Identity.API.Data;
+using Identity.API.Data.Seeding;
+using Identity.API.Implementations;
+using Identity.API.Interfaces;
 using System.Reflection;
 
 namespace Identity.API
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
             var environment = builder.Configuration.GetSection("HostSettings")["Environment"];
@@ -19,11 +22,18 @@ namespace Identity.API
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
+            #region Service Register
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddTransient<IDataContextInitializer, DataContextInitializer>();
+            #endregion
+
             #region BuildingBlock
             builder.InstallSerilog();
             builder.Services.InstallSwagger("v1", "JOB ALLEY API Identity");
             builder.Services.InstallCORS();
             builder.Services.InstallAuthentication();
+            builder.Services.InstallMediatR(Assembly.GetExecutingAssembly());
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             #endregion
 
@@ -43,6 +53,14 @@ namespace Identity.API
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
             app.MigrationAutoUpdate<DataContext>();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+                IDataContextInitializer initializer = services.GetRequiredService<IDataContextInitializer>();
+                await initializer.SeedAsync();
+                scope.Dispose();
+            }
 
             app.Run();
 		}
