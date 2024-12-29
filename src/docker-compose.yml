@@ -27,12 +27,19 @@ services:
       context: .
       dockerfile: Services/Identity/Identity.API/Dockerfile
 
+  yarpapigateway:
+    image: ${DOCKER_REGISTRY-}yarpapigateway
+    build:
+      context: .
+      dockerfile: ApiGateways/YarpApiGateway/Dockerfile
+
 volumes:
   postgres_joballey_pg:
 
 networks:
   joballey_network:
     driver: bridge
+
 
 
 
