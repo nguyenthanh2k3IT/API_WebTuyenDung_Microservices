@@ -1,6 +1,6 @@
 ﻿namespace Identity.API.Features.UserFeature.Commands;
 
-public record User_UpdateStatusCommand(UpdateStatusRequest RequestData) : ICommand<Result<bool>>;
+public record User_UpdateStatusCommand(UpdateStatusRequest<UserStatusEnum> RequestData) : ICommand<Result<bool>>;
 
 public class UserUpdateStatusCommandValidator : AbstractValidator<User_UpdateStatusCommand>
 {

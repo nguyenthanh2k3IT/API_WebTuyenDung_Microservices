@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using BuildingBlock.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace BuildingBlock.Core.Request;
 
-public class UpdateStatusRequest
+public class UpdateStatusRequest<TStatus>
 {
 	public Guid Id { get; set; }
-	public string Status { get; set; }
+	public TStatus Status { get; set; }
 	[JsonIgnore] public Guid? ModifiedUser { set; get; }
-	[JsonIgnore] public string? RoleId { set; get; }
+	[JsonIgnore] public RoleEnum? RoleId { set; get; }
 }

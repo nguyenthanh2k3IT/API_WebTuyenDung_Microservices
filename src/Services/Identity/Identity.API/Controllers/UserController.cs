@@ -41,7 +41,7 @@ namespace Identity.API.Controllers
 		}
 
 		[HttpPut("status")]
-		public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusRequest request)
+		public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusRequest<UserStatusEnum> request)
 		{
 			request.ModifiedUser = GetUserId();
 			return Ok(await Mediator.Send(new User_UpdateStatusCommand(request)));
