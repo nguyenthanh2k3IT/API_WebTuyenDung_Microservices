@@ -1,23 +1,25 @@
-﻿namespace Identity.API.Data.Seeding;
+﻿using System;
+using System.Text.Json;
+
+namespace Identity.API.Data.Seeding;
 
 public class DataContextInitializer : IDataContextInitializer
 {
 	private readonly DataContext _context;
-	public DataContextInitializer(DataContext context)
+    private readonly HttpClient _httpClient;
+    public DataContextInitializer(DataContext context, HttpClient httpClient)
 	{
 		_context = context;
-	}
+        _httpClient = httpClient;
+    }
 
     public class ProvinceOpenAPI
     {
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Slug { get; set; }
-        public string Type { get; set; }
-        public string NameWithType { get; set; }
-        public string Path { get; set; }
-        public string PathWithType { get; set; }
-        public string Districts { get; set; } // Optional, tùy thuộc vào response
+        public int code { get; set; }
+        public string name { get; set; }
+        public string division_type { get; set; }
+        public string codename { get; set; }
+        public int phone_code { get; set; }
     }
 
     public async Task<int> InitProvince()
@@ -25,8 +27,34 @@ public class DataContextInitializer : IDataContextInitializer
 		int rows = 0;
 		if (!_context.Provinces.Any())
 		{
+			var url = "https://provinces.open-api.vn/api/";
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            var datas = JsonSerializer.Deserialize<List<ProvinceOpenAPI>>(jsonResponse, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+			if (datas != null && datas.Any())
+			{
+				List<Province> provinces = new List<Province>();
+				foreach(var item in datas)
+				{
+					var province = new Province();
+					province.Id = item.code.ToString();
+					province.Name = item.name;
+					province.Area = item.phone_code.ToString();
+					province.AreaName = item.division_type;
+					province.Code = item.codename;
+					province.CreatedUser = Guid.NewGuid();
+                    province.ModifiedUser = Guid.NewGuid();
 
-		}
+					provinces.Add(province);
+				}
+				_context.Provinces.AddRange(provinces);
+				rows = await _context.SaveChangesAsync();
+			}
+        }
 		return rows;
     }
 
@@ -203,7 +231,8 @@ public class DataContextInitializer : IDataContextInitializer
 	{
 		try
 		{
-			await InitSize();
+			await InitProvince();
+            await InitSize();
 			await InitStatus();
 			await InitRole();
 			await InitUser();

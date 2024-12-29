@@ -1,11 +1,12 @@
 ﻿namespace Identity.API.Data;
 
 [Table("tb_provinces")]
-public class Province : BaseEntity<int>
+public class Province : BaseEntity<string>
 {
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public string Area { get; set; }
-    public string AreaName { get; set; }
+    public Province() : base() { }
+    public string Name { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public string Area { get; set; } = string.Empty;
+    public string AreaName { get; set; } = string.Empty;
     public ICollection<CompanyInfo>? CompanyInfos { set; get; }
 }

@@ -19,9 +19,10 @@ public class Company_GetAllQueryHandler : IQueryHandler<Company_GetAllQuery, Res
 		var orderCol = request.RequestData.OrderCol;
 		var orderDir = request.RequestData.OrderDir;
 
-		IEnumerable<CompanyDto> Companys = await _context.CompanyInfos.OrderedListQuery(orderCol, orderDir)
+		IEnumerable<CompanyDto> Companys = await _context.CompanyInfos.Include(s => s.Provinces)
+												   .OrderedListQuery(orderCol, orderDir)
 												   .ProjectTo<CompanyDto>(_mapper.ConfigurationProvider)
-												   .ToListAsync();
+												   .ToListAsync(cancellationToken);
 
 		return Result<IEnumerable<CompanyDto>>.Success(Companys);
 	}

@@ -15,8 +15,7 @@ namespace Identity.API.Migrations
                 name: "tb_provinces",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Area = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -311,7 +310,7 @@ namespace Identity.API.Migrations
                 columns: table => new
                 {
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProvinceId = table.Column<int>(type: "int", nullable: false)
+                    ProvinceId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

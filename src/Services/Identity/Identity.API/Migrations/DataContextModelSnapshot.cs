@@ -292,11 +292,8 @@ namespace Identity.API.Migrations
 
             modelBuilder.Entity("Identity.API.Data.Province", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Area")
                         .IsRequired()
@@ -544,8 +541,8 @@ namespace Identity.API.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProvinceId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProvinceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CompanyId", "ProvinceId");
 

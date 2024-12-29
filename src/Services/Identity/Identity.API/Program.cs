@@ -21,6 +21,7 @@ namespace Identity.API
             builder.Services.AddControllers();
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpClient();
 
             #region Service Register
             builder.Services.AddScoped<ITokenService, TokenService>();

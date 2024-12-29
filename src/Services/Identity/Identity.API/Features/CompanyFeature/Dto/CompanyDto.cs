@@ -22,7 +22,7 @@ public class CompanyDto
         {
             CreateMap<CompanyInfo, CompanyDto>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size ?? null))
-                .ForMember(dest => dest.Provinces, opt => opt.MapFrom(src => src.Provinces ?? null))
+                .ForMember(dest => dest.Provinces, opt => opt.MapFrom(src => src.Provinces))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email ?? ""))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone ?? ""))
                 .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.User.Fullname ?? ""))
