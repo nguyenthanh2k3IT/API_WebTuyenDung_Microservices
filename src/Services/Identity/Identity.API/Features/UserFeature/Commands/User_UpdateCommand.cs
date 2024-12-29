@@ -51,14 +51,15 @@ public class User_UpdateCommandHandler : ICommandHandler<User_UpdateCommand, Res
         {
             var company = await _context.CompanyInfos.IgnoreQueryFilters()
                                         .FirstOrDefaultAsync(s => s.Id == user.Id);
-            if (company != null)
+
+            if (company != null && company.DeleteFlag == true)
             {
                 company.DeleteFlag = false;
                 company.ModifiedDate = DateTime.Now;
                 company.ModifiedUser = request.RequestData.ModifiedUser;
                 _context.Update(company);
             }
-            else
+            else if (company == null)
             {
                 company = new CompanyInfo()
                 {

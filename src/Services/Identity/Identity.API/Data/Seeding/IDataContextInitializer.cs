@@ -6,4 +6,6 @@ public interface IDataContextInitializer
 	Task<int> InitRole();
 	Task<int> InitUser();
 	Task<int> InitStatus();
+    Task<int> InitSize();
+    Task<int> InitProvince();
 }

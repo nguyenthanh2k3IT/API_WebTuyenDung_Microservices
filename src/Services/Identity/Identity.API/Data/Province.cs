@@ -1,7 +1,7 @@
 ﻿namespace Identity.API.Data;
 
 [Table("tb_provinces")]
-public class Province : BaseEntity<Guid>
+public class Province : BaseEntity<int>
 {
     public string Name { get; set; }
     public string Code { get; set; }

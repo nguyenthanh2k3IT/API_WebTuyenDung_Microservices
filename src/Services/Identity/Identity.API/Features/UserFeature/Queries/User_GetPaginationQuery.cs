@@ -1,5 +1,4 @@
-﻿using BuildingBlock.Core.Paging;
-using Identity.API.Features.UserFeature.Dto;
+﻿using Identity.API.Features.UserFeature.Dto;
 using Identity.API.Models.UserModel;
 
 namespace Identity.API.Features.UserFeature.Queries;
@@ -37,10 +36,10 @@ public class User_GetPaginationQueryHandler : IQueryHandler<User_GetPaginationQu
 			query = query.Where(s => s.RoleId == request.RequestData.Role);
 		}
 
-		/*if (!string.IsNullOrEmpty(request.RequestData.Status))
+		if (request.RequestData.UserStatus != null)
 		{
-			query = query.Where(s => s.StatusId == request.RequestData.Status);
-		}*/
+			query = query.Where(s => s.StatusId == request.RequestData.UserStatus);
+		}
 
 		var paging = await query.PaginatedListAsync(request.RequestData.PageIndex, request.RequestData.PageSize);
 		return Result<PaginatedList<UserDto>>.Success(paging);

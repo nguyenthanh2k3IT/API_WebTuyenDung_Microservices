@@ -27,7 +27,7 @@ namespace Identity.API.Controllers
         }
 
         [HttpGet("pagination")]
-        public async Task<IActionResult> Pagination([FromQuery] PaginationRequest request)
+        public async Task<IActionResult> Pagination([FromQuery] CompanyPaginationRequest request)
         {
             return Ok(await Mediator.Send(new Company_GetPaginationQuery(request)));
         }

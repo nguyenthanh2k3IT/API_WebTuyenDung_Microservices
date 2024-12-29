@@ -1,10 +1,9 @@
-﻿using BuildingBlock.Core.Paging;
-using Identity.API.Features.CompanyFeature.Dto;
+﻿using Identity.API.Features.CompanyFeature.Dto;
 using Identity.API.Models.CompanyModel;
 
 namespace Identity.API.Features.CompanyFeature.Queries;
 
-public record Company_GetPaginationQuery(PaginationRequest RequestData) : IQuery<Result<PaginatedList<CompanyDto>>>;
+public record Company_GetPaginationQuery(CompanyPaginationRequest RequestData) : IQuery<Result<PaginatedList<CompanyDto>>>;
 public class Company_GetPaginationQueryHandler : IQueryHandler<Company_GetPaginationQuery, Result<PaginatedList<CompanyDto>>>
 {
 	private readonly DataContext _context;
@@ -23,16 +22,22 @@ public class Company_GetPaginationQueryHandler : IQueryHandler<Company_GetPagina
 
 		var query = _context.CompanyInfos
 							.OrderedListQuery(orderCol, orderDir)
-							.ProjectTo<CompanyDto>(_mapper.ConfigurationProvider)
 							.AsNoTracking();
 
 		if (!string.IsNullOrEmpty(request.RequestData.TextSearch))
 		{
-			query = query.Where(s => s.Email.Contains(request.RequestData.TextSearch) || 
-									 s.Fullname.Contains(request.RequestData.TextSearch));
+			query = query.Where(s => s.User.Email.Contains(request.RequestData.TextSearch) || 
+									 s.User.Fullname.Contains(request.RequestData.TextSearch));
 		}
 
-		var paging = await query.PaginatedListAsync(request.RequestData.PageIndex, request.RequestData.PageSize);
+		if (!StringHelper.IsNullOrEmpty(request.RequestData.SizeId))
+		{
+			query = query.Where(s => s.SizeId != request.RequestData.SizeId);
+		}
+
+		var paging = await query.ProjectTo<CompanyDto>(_mapper.ConfigurationProvider)
+								.PaginatedListAsync(request.RequestData.PageIndex, request.RequestData.PageSize);
+
 		return Result<PaginatedList<CompanyDto>>.Success(paging);
 	}
 }

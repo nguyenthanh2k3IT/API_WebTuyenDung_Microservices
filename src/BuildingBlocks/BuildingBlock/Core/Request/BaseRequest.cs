@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using BuildingBlock.Core.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BuildingBlock.Core.Request;
 
@@ -11,7 +12,7 @@ public  class BaseRequest
 	public string? Type { get; set; }
 	public string? Date { get; set; }
 	[BindNever] public Guid? UserId { get; set; }
-	[BindNever] public string? RoleId { get; set; }
+	[BindNever] public RoleEnum? UserRoleId { get; set; }
 }
 
 public static class OrderDir

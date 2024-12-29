@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241225082434_db_v1")]
-    partial class db_v1
+    [Migration("20241229150046_init-db")]
+    partial class initdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace Identity.API.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("CompanyInfos");
+                    b.ToTable("tb_companies");
                 });
 
             modelBuilder.Entity("Identity.API.Data.CoverLetter", b =>
@@ -107,7 +107,7 @@ namespace Identity.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CoverLetters");
+                    b.ToTable("tb_cover_letters");
                 });
 
             modelBuilder.Entity("Identity.API.Data.HubConnection", b =>
@@ -290,14 +290,16 @@ namespace Identity.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("tb_profiles");
                 });
 
             modelBuilder.Entity("Identity.API.Data.Province", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Area")
                         .IsRequired()
@@ -332,7 +334,7 @@ namespace Identity.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Provinces");
+                    b.ToTable("tb_provinces");
                 });
 
             modelBuilder.Entity("Identity.API.Data.Role", b =>
@@ -398,7 +400,7 @@ namespace Identity.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("tb_sizes");
                 });
 
             modelBuilder.Entity("Identity.API.Data.Status", b =>
@@ -545,8 +547,8 @@ namespace Identity.API.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProvinceId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
 
                     b.HasKey("CompanyId", "ProvinceId");
 
