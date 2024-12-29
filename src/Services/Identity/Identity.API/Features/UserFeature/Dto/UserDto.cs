@@ -1,6 +1,5 @@
 ﻿using Identity.API.Features.RoleFeature.Dto;
 using Identity.API.Features.StatusFeature.Dto;
-using System.Text.Json.Serialization;
 
 namespace Identity.API.Features.UserFeature.Dto;
 

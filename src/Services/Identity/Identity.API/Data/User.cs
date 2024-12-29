@@ -13,15 +13,15 @@ public class User : BaseEntity<Guid>
 	public string Phone { get; set; } = string.Empty;
 	public string Fullname { get; set; } = string.Empty;
 	public string? Avatar { get; set; } = string.Empty;
-	public CompanyInfo? Company { get; set; }
+    [JsonIgnore] public CompanyInfo? Company { get; set; }
 	public RoleEnum? RoleId { get; set; }
-	public Role? Role { get; set; }
+    [JsonIgnore] public Role? Role { get; set; }
 	public UserStatusEnum? StatusId { get; set; }
-	public Status? Status { get; set; }
-	public ICollection<Token>? Tokens { set; get; }
-	public ICollection<HubConnection>? HubConnections { set; get; }
-	public ICollection<OTP>? OTPs { set; get; }
-	public ICollection<Notification>? Notifications { set; get; }
-    public ICollection<Profile>? Profiles { set; get; }
-    public ICollection<CoverLetter>? CoverLetters { set; get; }
+    [JsonIgnore] public Status? Status { get; set; }
+    [JsonIgnore] public ICollection<Token>? Tokens { set; get; }
+    [JsonIgnore] public ICollection<HubConnection>? HubConnections { set; get; }
+    [JsonIgnore] public ICollection<OTP>? OTPs { set; get; }
+    [JsonIgnore] public ICollection<Notification>? Notifications { set; get; }
+    [JsonIgnore] public ICollection<Profile>? Profiles { set; get; }
+    [JsonIgnore] public ICollection<CoverLetter>? CoverLetters { set; get; }
 }

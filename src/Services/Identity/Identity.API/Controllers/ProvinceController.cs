@@ -1,5 +1,4 @@
 ﻿using Identity.API.Features.ProvinceFeature.Queries;
-using Identity.API.Features.UserFeature.Queries;
 
 namespace Identity.API.Controllers
 {

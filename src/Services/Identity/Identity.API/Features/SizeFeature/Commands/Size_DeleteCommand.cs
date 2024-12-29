@@ -18,7 +18,7 @@ public class Size_DeleteCommandHandler : ICommandHandler<Size_DeleteCommand, Res
 		if (request.RequestData.Ids == null)
 			throw new ApplicationException("Ids not found");
 
-        var ids = request.RequestData.Ids.Select(s => Enum.Parse<Guid>(s)).ToList();
+        var ids = request.RequestData.Ids.Select(s => Guid.Parse(s)).ToList();
         var query = await _context.Sizes.Where(m => ids.Contains(m.Id)).ToListAsync();
 		if (query == null || query.Count == 0) throw new ApplicationException($"Không tìm thấy trong dữ liệu có Id: {string.Join(";", request.RequestData.Ids)}");
 

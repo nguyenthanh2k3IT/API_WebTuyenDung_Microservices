@@ -17,7 +17,7 @@ public class User_DeleteCommandHandler : ICommandHandler<User_DeleteCommand, Res
 			throw new ApplicationException("Ids not found");
 
 		List<Guid> ids = request.RequestData.Ids.Select(m => Guid.Parse(m)).ToList();
-		var query = await _context.Users.Where(m => ids.Contains(m.Id)).ToListAsync();
+		var query = await _context.Users.Include(s => s.Company).Where(m => ids.Contains(m.Id)).ToListAsync();
 		if (query == null || query.Count == 0) throw new ApplicationException($"Không tìm thấy trong dữ liệu có Id: {string.Join(";", request.RequestData.Ids)}");
 
 		foreach (var item in query)
@@ -25,6 +25,15 @@ public class User_DeleteCommandHandler : ICommandHandler<User_DeleteCommand, Res
 			item.DeleteFlag = true;
 			item.ModifiedDate = DateTime.Now;
 			item.ModifiedUser = request.RequestData.ModifiedUser;
+
+			if(item.Company != null)
+			{
+                item.Company.DeleteFlag = true;
+                item.Company.ModifiedDate = DateTime.Now;
+                item.Company.ModifiedUser = request.RequestData.ModifiedUser;
+
+				_context.CompanyInfos.Update(item.Company);
+            }
 		}
 
 		_context.Users.UpdateRange(query);
