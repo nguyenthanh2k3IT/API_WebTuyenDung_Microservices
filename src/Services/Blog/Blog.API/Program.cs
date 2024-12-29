@@ -25,7 +25,7 @@ namespace Blog.API
 
             #region BuildingBlock
             builder.InstallSerilog();
-            builder.Services.InstallSwagger("v1", "JOB_ALLEY.API BLOG");
+            builder.Services.InstallSwagger("v1", "JOB ALLEY API - BLOG SERVICE");
             builder.Services.InstallCORS();
             builder.Services.InstallAuthentication();
             builder.Services.InstallMediatR(Assembly.GetExecutingAssembly());

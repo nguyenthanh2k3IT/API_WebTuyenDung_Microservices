@@ -3,4 +3,5 @@
 public interface IDataInitializer
 {
     Task SeedAsync();
+    Task InitStatus();
 }

@@ -31,7 +31,7 @@ namespace Identity.API
 
             #region BuildingBlock
             builder.InstallSerilog();
-            builder.Services.InstallSwagger("v1", "JOB ALLEY API Identity");
+            builder.Services.InstallSwagger("v1", "JOB ALLEY API - IDENTITY SERVICE");
             builder.Services.InstallCORS();
             builder.Services.InstallAuthentication();
             builder.Services.InstallMediatR(Assembly.GetExecutingAssembly());
