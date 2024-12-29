@@ -4,7 +4,7 @@ using Identity.API.Models.CompanyModel;
 
 namespace Identity.API.Features.CompanyFeature.Queries;
 
-public record Company_GetPaginationQuery(CompanyPaginationRequest RequestData) : IQuery<Result<PaginatedList<CompanyDto>>>;
+public record Company_GetPaginationQuery(PaginationRequest RequestData) : IQuery<Result<PaginatedList<CompanyDto>>>;
 public class Company_GetPaginationQueryHandler : IQueryHandler<Company_GetPaginationQuery, Result<PaginatedList<CompanyDto>>>
 {
 	private readonly DataContext _context;

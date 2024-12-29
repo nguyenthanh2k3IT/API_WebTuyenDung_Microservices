@@ -4,14 +4,13 @@ using Identity.API.Models.CompanyModel;
 
 namespace Identity.API.Features.CompanyFeature.Commands;
 
-public record Company_UpdateCommand(CompanyUpdateRequest RequestData) : ICommand<Result<CompanyDto>>;
+public record Company_AddCommand(CompanyAddRequest RequestData) : ICommand<Result<CompanyDto>>;
 
-public class CompanyUpdateCommandValidator : AbstractValidator<Company_UpdateCommand>
+public class CompanyAddCommandValidator : AbstractValidator<Company_AddCommand>
 {
-    public CompanyUpdateCommandValidator()
+    public CompanyAddCommandValidator()
     {
-        RuleFor(command => command.RequestData.Id)
-            .NotEmpty().WithMessage("Id không được để trống");
+        RuleFor(command => command.RequestData.Password).PasswordRule();
 
         RuleFor(command => command.RequestData.Email).EmailRule();
 
@@ -35,54 +34,44 @@ public class CompanyUpdateCommandValidator : AbstractValidator<Company_UpdateCom
     }
 }
 
-public class Company_UpdateCommandHandler : ICommandHandler<Company_UpdateCommand, Result<CompanyDto>>
+public class Company_AddCommandHandler : ICommandHandler<Company_AddCommand, Result<CompanyDto>>
 {
 
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public Company_UpdateCommandHandler(IMapper mapper, DataContext context)
+    public Company_AddCommandHandler(IMapper mapper, DataContext context)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<Result<CompanyDto>> Handle(Company_UpdateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CompanyDto>> Handle(Company_AddCommand request, CancellationToken cancellationToken)
     {
-        var company = await _context.CompanyInfos.Include(s => s.User).FirstOrDefaultAsync(s => s.Id == request.RequestData.Id);
+        var user = new User();
+        user.Email = request.RequestData.Email;
+        user.Password = request.RequestData.Password;
+        user.Phone = request.RequestData.Phone;
+        user.Fullname = request.RequestData.Fullname;
+        user.Avatar = request.RequestData.Avatar ?? AvatarConstant.Default;
+        user.RoleId = RoleEnum.COMPANY;
 
-        if (company == null)
-        {
-            throw new ApplicationException("Không tìm thấy công ty");
-        }
-
-        company.User.Email = request.RequestData.Email;
-        company.User.Phone = request.RequestData.Phone;
-        company.User.Fullname = request.RequestData.Fullname;
-
-        if (StringHelper.IsModified(company.User.Avatar, request.RequestData.Avatar))
-        {
-            company.User.Avatar = request.RequestData.Avatar;
-        }
-
-        if (StringHelper.IsModified(company.Wallpaper, request.RequestData.Wallpaper))
-        {
-            company.Wallpaper = request.RequestData.Wallpaper!;
-        }
-
+        var company = new CompanyInfo();
+        company.Id = user.Id;
+        company.User = user;
+        company.Wallpaper = request.RequestData.Wallpaper ?? AvatarConstant.Default;
         company.Website = request.RequestData.Website;
         company.Address = request.RequestData.Address;
         company.Introduction = request.RequestData.Introduction;
 
         var size = await _context.Sizes.FindAsync(request.RequestData.SizeId);
-        if(size == null)
+        if (size == null)
         {
             throw new ApplicationException("Không tìm thấy quy mô công ty");
         }
         company.Size = size;
         company.SizeId = size.Id;
 
-        company.Provinces.Clear();
         if (request.RequestData.ProvinceIds != null && request.RequestData.ProvinceIds.Count > 0)
         {
             var ids = request.RequestData.ProvinceIds;
@@ -92,8 +81,8 @@ public class Company_UpdateCommandHandler : ICommandHandler<Company_UpdateComman
         company.ModifiedDate = DateTime.Now;
         company.ModifiedUser = request.RequestData.ModifiedUser;
 
-        _context.CompanyInfos.Update(company);
-        _context.Users.Update(company.User);
+        _context.CompanyInfos.Add(company);
+        _context.Users.Add(user);
 
         await _context.SaveChangesAsync(cancellationToken);
 

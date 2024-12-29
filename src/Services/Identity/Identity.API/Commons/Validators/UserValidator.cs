@@ -7,35 +7,35 @@ public static class UserValidator
 	public static IRuleBuilderOptions<T, string> EmailRule<T>(this IRuleBuilder<T, string> ruleBuilder)
 	{
 		return ruleBuilder
-			.NotEmpty().WithMessage("Email is required")
-			.EmailAddress().WithMessage("Invalid email format");
+			.NotEmpty().WithMessage("Email không được để trống")
+			.EmailAddress().WithMessage("Invalid không đúng định dạng");
 	}
 
 	public static IRuleBuilderOptions<T, string?> PasswordRule<T>(this IRuleBuilder<T, string?> ruleBuilder)
 	{
 		return ruleBuilder
-			.NotEmpty().WithMessage("Password is required")
-			.Matches(@"^[a-z0-9]*$").WithMessage("Password must only contain lowercase letters and numbers")
-			.Matches(@"^\S*$").WithMessage("Password must not contain spaces")
-			.Length(6, 15).WithMessage("Password must be between 6 and 15 characters long");
+			.NotEmpty().WithMessage("Password không được để trống")
+			.Matches(@"^[a-z0-9]*$").WithMessage("Password chỉ có thể chứa số và chữ thường")
+			.Matches(@"^\S*$").WithMessage("Password không được chứa khoảng trắng")
+			.Length(6, 15).WithMessage("Password phải từ 6 đến 15 kí tự");
 	}
 
 	public static IRuleBuilderOptions<T, string> PhoneRule<T>(this IRuleBuilder<T, string> ruleBuilder)
 	{
 		return ruleBuilder
-			.NotEmpty().WithMessage("Phone is required")
-			.Matches(@"^0\d{9}$").WithMessage("Phone number must have 10 digits and start with 0");
+			.NotEmpty().WithMessage("Số điện thoại Không được để trống")
+			.Matches(@"^0\d{9}$").WithMessage("Số điện thoại phải bắt đầu bằng 0 và có 10 kí tự");
 	}
 
 	public static IRuleBuilderOptions<T, string> FullnameRule<T>(this IRuleBuilder<T, string> ruleBuilder)
 	{
 		return ruleBuilder
-			.NotEmpty().WithMessage("Fullname is required");
+			.NotEmpty().WithMessage("Tên hiện thị không được để trống");
 	}
 
 	public static IRuleBuilderOptions<T, string> AddressRule<T>(this IRuleBuilder<T, string> ruleBuilder)
 	{
 		return ruleBuilder
-			.NotEmpty().WithMessage("Address is required");
+			.NotEmpty().WithMessage("Địa chỉ không được để trống");
 	}
 }

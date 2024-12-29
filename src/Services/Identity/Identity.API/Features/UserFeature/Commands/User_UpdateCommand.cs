@@ -41,36 +41,39 @@ public class User_UpdateCommandHandler : ICommandHandler<User_UpdateCommand, Res
 			throw new ApplicationException("Email or password are not correct");
 		}
 
-		if (user.StatusId == UserStatusEnum.BANNED)
-		{
-			throw new ApplicationException("Account was banned");
-		}
-
 		user.Email = request.RequestData.Email;
 		user.Phone = request.RequestData.Phone;
 		user.Fullname = request.RequestData.Fullname;
+        user.Status = await _context.Statuses.FindAsync(request.RequestData.StatusId);
+        user.Role = await _context.Roles.FindAsync(request.RequestData.RoleId);
 
-		if (!string.IsNullOrEmpty(request.RequestData.StatusId))
-		{
-			var status = await _context.Statuses.FindAsync(request.RequestData.StatusId);
-			if (status != null)
-			{
-				user.StatusId = status.Id;
-				user.Status = status;
-			}
-		}
+        if (request.RequestData.RoleId == RoleEnum.COMPANY)
+        {
+            var company = await _context.CompanyInfos.IgnoreQueryFilters()
+                                        .FirstOrDefaultAsync(s => s.Id == user.Id);
+            if (company != null)
+            {
+                company.DeleteFlag = false;
+                company.ModifiedDate = DateTime.Now;
+                company.ModifiedUser = request.RequestData.ModifiedUser;
+                _context.Update(company);
+            }
+            else
+            {
+                company = new CompanyInfo()
+                {
+                    Id = user.Id,
+                    Wallpaper = AvatarConstant.Default,
+                    Website = "",
+                    Introduction = "",
+                    Address = ""
+                };
+                _context.Add(company);
+            }
+        }
 
-		if (!string.IsNullOrEmpty(request.RequestData.RoleId))
-		{
-			var role = await _context.Roles.FindAsync(request.RequestData.RoleId);
-			if (role != null)
-			{
-				user.RoleId = role.Id;
-				user.Role = role;
-			}
-		}
 
-		_context.Users.Update(user);
+        _context.Users.Update(user);
 		int rows = await _context.SaveChangesAsync();
 
 		return Result<UserDto>.Success(_mapper.Map<UserDto>(user));
