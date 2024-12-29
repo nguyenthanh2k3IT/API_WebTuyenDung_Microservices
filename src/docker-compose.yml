@@ -27,6 +27,12 @@ services:
       context: .
       dockerfile: Services/Identity/Identity.API/Dockerfile
 
+  blog.api:
+    image: ${DOCKER_REGISTRY-}blogapi
+    build:
+      context: .
+      dockerfile: Services/Blog/Blog.API/Dockerfile
+
   yarpapigateway:
     image: ${DOCKER_REGISTRY-}yarpapigateway
     build:
@@ -39,6 +45,7 @@ volumes:
 networks:
   joballey_network:
     driver: bridge
+
 
 
 

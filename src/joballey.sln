@@ -15,15 +15,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "Services\Id
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{473F821B-6993-4DE4-931F-0C8C051B16D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock", "BuildingBlocks\BuildingBlock\BuildingBlock.csproj", "{99E3750B-99DD-4E32-9FEA-C1000EDA91B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlock", "BuildingBlocks\BuildingBlock\BuildingBlock.csproj", "{99E3750B-99DD-4E32-9FEA-C1000EDA91B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock.Caching", "BuildingBlocks\BuildingBlock.Caching\BuildingBlock.Caching.csproj", "{3FE16A64-0159-43B0-9117-1998DCD77864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlock.Caching", "BuildingBlocks\BuildingBlock.Caching\BuildingBlock.Caching.csproj", "{3FE16A64-0159-43B0-9117-1998DCD77864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock.Messaging", "BuildingBlocks\BuildingBlock.Messaging\BuildingBlock.Messaging.csproj", "{CD883B73-525A-47BA-B08B-174E1E86E00D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlock.Messaging", "BuildingBlocks\BuildingBlock.Messaging\BuildingBlock.Messaging.csproj", "{CD883B73-525A-47BA-B08B-174E1E86E00D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlock.Grpc", "BuildingBlocks\BuildingBlock.Grpc\BuildingBlock.Grpc.csproj", "{82C9A555-1D85-42B9-AE99-FBA3911FA0FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlock.Grpc", "BuildingBlocks\BuildingBlock.Grpc\BuildingBlock.Grpc.csproj", "{82C9A555-1D85-42B9-AE99-FBA3911FA0FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpApiGateway", "ApiGateways\YarpApiGateway\YarpApiGateway.csproj", "{CB809026-A179-419D-BA29-8DF564009E6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YarpApiGateway", "ApiGateways\YarpApiGateway\YarpApiGateway.csproj", "{CB809026-A179-419D-BA29-8DF564009E6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blog", "Blog", "{32E78BF3-4A30-46C8-8AF6-D905B2BCA435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.API", "Services\Blog\Blog.API\Blog.API.csproj", "{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,10 @@ Global
 		{CB809026-A179-419D-BA29-8DF564009E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB809026-A179-419D-BA29-8DF564009E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB809026-A179-419D-BA29-8DF564009E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +79,8 @@ Global
 		{CD883B73-525A-47BA-B08B-174E1E86E00D} = {047C0649-19A5-49AF-945D-FA7687906ABF}
 		{82C9A555-1D85-42B9-AE99-FBA3911FA0FA} = {047C0649-19A5-49AF-945D-FA7687906ABF}
 		{CB809026-A179-419D-BA29-8DF564009E6B} = {C13055E8-FCFB-4417-864C-68F3BA687241}
+		{32E78BF3-4A30-46C8-8AF6-D905B2BCA435} = {D9D253EF-25A1-4C8D-AB3A-569E1B9C6DFD}
+		{B5D84A35-9BE9-415C-A1DA-E457C4BC8B56} = {32E78BF3-4A30-46C8-8AF6-D905B2BCA435}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {493EF466-F0D5-45E5-B795-BD60BEBD3A68}
