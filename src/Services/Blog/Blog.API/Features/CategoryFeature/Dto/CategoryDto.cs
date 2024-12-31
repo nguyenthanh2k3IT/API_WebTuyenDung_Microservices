@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Blog.API.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blog.API.Features.CategoryFeature.Dto
 {
@@ -9,5 +10,12 @@ namespace Blog.API.Features.CategoryFeature.Dto
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
+        private class Mapping : AutoMapper.Profile
+        {
+            public Mapping()
+            {
+                CreateMap<Category, CategoryDto>();
+            }
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace Blog.API.Features.CategoryFeature.Commands
 
             if (Categories == null)
             {
-                throw new ApplicationException("Size not found");
+                throw new ApplicationException("Category not found");
             }
 
             Categories.Slug = request.RequestData.Slug;

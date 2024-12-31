@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\CategoryFeature\Commands\" />
+    <Folder Include="Features\PostFeature\Commands\" />
+    <Folder Include="Features\PostFeature\Queries\" />
   </ItemGroup>
 
 </Project>
