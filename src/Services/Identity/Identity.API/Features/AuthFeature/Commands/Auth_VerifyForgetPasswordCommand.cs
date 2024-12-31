@@ -36,7 +36,7 @@ public class Auth_VerifyForgetPasswordCommandHandler : ICommandHandler<Auth_Veri
 			throw new ApplicationException($"OTP has already been used");
 		}
 
-		string newPassword = StringHelper.GenerateRandomString(6).ToLower();
+		string newPassword = Generator.GenerateRandomString(6).ToLower();
 
 		otp.IsExpired = true;
 		otp.User.Password = newPassword;

@@ -8,12 +8,12 @@ public class SizeAddCommandValidator : AbstractValidator<Size_AddCommand>
 {
 	public SizeAddCommandValidator()
 	{
-		RuleFor(command => command.RequestData.Id)
-			.NotEmpty().WithMessage("Id is required");
-
 		RuleFor(command => command.RequestData.Name)
-			.NotEmpty().WithMessage("Name is required");
-	}
+			.NotEmpty().WithMessage("Tên quy mô không được để trống");
+
+        RuleFor(command => command.RequestData.Value)
+            .NotEmpty().WithMessage("Giá trị không được để trống");
+    }
 }
 
 public class Size_AddCommandHandler : ICommandHandler<Size_AddCommand, Result<SizeDto>>
@@ -30,14 +30,8 @@ public class Size_AddCommandHandler : ICommandHandler<Size_AddCommand, Result<Si
 
 	public async Task<Result<SizeDto>> Handle(Size_AddCommand request, CancellationToken cancellationToken)
 	{
-		var exist = await _context.Sizes.FindAsync(request.RequestData.Id);
 
-		if(exist != null)
-		{
-			throw new ApplicationException("Size id is already in uses");
-		}
-
-		var Size = new Size()
+		var size = new Size()
 		{
 			Id = Guid.NewGuid(),
 			Name = request.RequestData.Name,
@@ -46,10 +40,10 @@ public class Size_AddCommandHandler : ICommandHandler<Size_AddCommand, Result<Si
 			ModifiedUser = request.RequestData.CreatedUser
 		};
 
-		_context.Sizes.Add(Size);
+		_context.Sizes.Add(size);
 
 		await _context.SaveChangesAsync(cancellationToken);
 
-		return Result<SizeDto>.Success(_mapper.Map<SizeDto>(Size));
+		return Result<SizeDto>.Success(_mapper.Map<SizeDto>(size));
 	}
 }

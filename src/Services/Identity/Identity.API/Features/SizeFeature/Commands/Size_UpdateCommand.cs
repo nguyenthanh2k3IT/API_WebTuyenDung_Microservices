@@ -8,12 +8,14 @@ public class SizeUpdateCommandValidator : AbstractValidator<Size_UpdateCommand>
 {
 	public SizeUpdateCommandValidator()
 	{
+        RuleFor(command => command.RequestData.Id)
+            .NotEmpty().WithMessage("Không tìm thấy ID");
 
-		RuleFor(command => command.RequestData.Name)
-			.NotEmpty().WithMessage("Name is required");
+        RuleFor(command => command.RequestData.Name)
+            .NotEmpty().WithMessage("Tên quy mô không được để trống");
 
         RuleFor(command => command.RequestData.Value)
-            .NotEmpty().WithMessage("Value is required");
+            .NotEmpty().WithMessage("Giá trị không được để trống");
     }
 }
 
@@ -35,7 +37,7 @@ public class Size_UpdateCommandHandler : ICommandHandler<Size_UpdateCommand, Res
 
 		if (Size == null)
 		{
-			throw new ApplicationException("Size not found");
+			throw new ApplicationException("Không tìm thấy quy mô công ty");
 		}
 
 		Size.Name = request.RequestData.Name;

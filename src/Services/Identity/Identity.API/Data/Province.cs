@@ -8,5 +8,5 @@ public class Province : BaseEntity<string>
     public string Code { get; set; } = string.Empty;
     public string Area { get; set; } = string.Empty;
     public string AreaName { get; set; } = string.Empty;
-    public ICollection<CompanyInfo>? CompanyInfos { set; get; }
+    [JsonIgnore] public ICollection<CompanyInfo>? CompanyInfos { set; get; }
 }
