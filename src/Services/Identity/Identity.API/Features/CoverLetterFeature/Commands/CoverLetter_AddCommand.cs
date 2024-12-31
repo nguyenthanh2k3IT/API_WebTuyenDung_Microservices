@@ -30,7 +30,11 @@ public class CoverLetter_AddCommandHandler : ICommandHandler<CoverLetter_AddComm
 
     public async Task<Result<CoverLetterDto>> Handle(CoverLetter_AddCommand request, CancellationToken cancellationToken)
     {
-
+        var count = await _context.CoverLetters.Where(s => s.UserId == request.RequestData.UserId).CountAsync();
+        if(count >= 5)
+        {
+            throw new ApplicationException("Chỉ có thể tạo tối đa 5 thư ứng tuyển");
+        }
         var CoverLetter = new CoverLetter()
         {
             Id = Guid.NewGuid(),

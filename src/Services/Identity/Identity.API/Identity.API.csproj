@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\ProfileFeature\Commands\" />
+    <Folder Include="Features\ProfileFeature\Dtos\" />
+    <Folder Include="Features\ProfileFeature\Queries\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

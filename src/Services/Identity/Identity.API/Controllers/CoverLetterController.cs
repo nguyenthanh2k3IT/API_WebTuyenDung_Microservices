@@ -7,6 +7,13 @@ namespace Identity.API.Controllers
     [ApiController]
     public class CoverLetterController : BaseController
     {
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] BaseRequest request)
+        {
+            request.UserId = GetUserId();
+            return Ok(await Mediator.Send(new CoverLetter_GetAllQuery(request)));
+        }
+
         [HttpGet("pagination")]
         public async Task<IActionResult> Pagination([FromQuery] PaginationRequest request)
         {
