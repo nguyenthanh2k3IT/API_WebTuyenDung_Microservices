@@ -24,7 +24,7 @@ public class CompanyAddCommandValidator : AbstractValidator<Company_AddCommand>
 
         RuleFor(command => command.RequestData.Address)
             .NotEmpty().WithMessage("Địa chỉ không được để trống")
-            .MaximumLength(250).WithMessage("Địa chỉ không được vượt quá 250 ký tự");
+            .MaximumLength(100).WithMessage("Địa chỉ không được vượt quá 100 ký tự");
 
         RuleFor(command => command.RequestData.Introduction)
             .MaximumLength(1000).WithMessage("Giới thiệu không được vượt quá 1000 ký tự");
