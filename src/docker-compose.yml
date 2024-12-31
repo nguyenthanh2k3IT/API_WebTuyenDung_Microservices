@@ -33,6 +33,12 @@ services:
       context: .
       dockerfile: Services/Blog/Blog.API/Dockerfile
 
+  storage.api:
+    image: ${DOCKER_REGISTRY-}storageapi
+    build:
+      context: .
+      dockerfile: Services/Storage/Storage.API/Dockerfile
+
   yarpapigateway:
     image: ${DOCKER_REGISTRY-}yarpapigateway
     build:
@@ -45,6 +51,7 @@ volumes:
 networks:
   joballey_network:
     driver: bridge
+
 
 
 

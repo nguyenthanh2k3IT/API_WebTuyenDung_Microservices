@@ -82,6 +82,19 @@ services:
     networks:
       - joballey_network
 
+  storage.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_URLS=https://+:8081
+    ports:
+      - 7003:8081
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    networks:
+      - joballey_network
+
   yarpapigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -89,6 +102,8 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
     depends_on:
       - identity.api
+      - blog.api
+      - storage.api
     ports:
       - 7070:8080
       - 7000:8081
@@ -105,4 +120,5 @@ networks:
 volumes:
   postgres_joballey_pg:
   mssql_data:  
+
 
