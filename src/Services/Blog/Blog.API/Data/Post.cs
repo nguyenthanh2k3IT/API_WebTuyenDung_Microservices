@@ -15,6 +15,7 @@ public class Post : BaseEntity<Guid>
     [MaxLength(250)]
     public string Title { get; set; }
     [Required] public string Content { get; set; }
+    [Required] public string Image { get; set; }
     [Required] public Guid UserId { get; set; }
     [JsonIgnore] public Status? Status { get; set; }
     public PostStatusEnum? StatusId { get; set; }
