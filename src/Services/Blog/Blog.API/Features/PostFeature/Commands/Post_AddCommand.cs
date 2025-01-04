@@ -5,10 +5,12 @@ using Blog.API.Features.PostFeature.Dtos;
 using Blog.API.Models;
 using BuildingBlock.Core.Result;
 using BuildingBlock.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.API.Features.PostFeature.Commands
 {
     public record Post_AddCommand(PostRequest RequestData) : ICommand<Result<PostDto>>;
+
     public class Post_AddCommandHandler : ICommandHandler<Post_AddCommand, Result<PostDto>>
     {
         private readonly IMapper _mapper;
@@ -26,6 +28,9 @@ namespace Blog.API.Features.PostFeature.Commands
             {
                 throw new ApplicationException("Slug is already in uses");
             }
+            var category = await _dataContext.Categories
+                                   .Where(s => s.Id == request.RequestData.CategoryId).FirstOrDefaultAsync();
+                                   
             var Post = new Post()
             {
                 Slug = request.RequestData.Slug,
@@ -34,6 +39,13 @@ namespace Blog.API.Features.PostFeature.Commands
                 Title=request.RequestData.Title
 
             };
+            if (category == null)
+            {
+                throw new ApplicationException("category is invalid");
+            }
+
+           Post.Category = category;
+
             _dataContext.Posts.Add(Post);
             await _dataContext.SaveChangesAsync(cancellationToken);
             return Result<PostDto>.Success(_mapper.Map<PostDto>(Post));

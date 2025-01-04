@@ -32,11 +32,7 @@ namespace Blog.API.Features.PostSaveFeature.Queries
                                 .ProjectTo<PostSaveDto>(_mapper.ConfigurationProvider)
                                 .AsNoTracking();
 
-            if (!string.IsNullOrEmpty(request.RequestData.TextSearch))
-            {
-                query = query.Where(s => s.UserId.Contains(request.RequestData.TextSearch) ||
-                                         s.PostId.Contains(request.RequestData.TextSearch));
-            }
+           
 
             if (request.RequestData.Skip != null)
             {

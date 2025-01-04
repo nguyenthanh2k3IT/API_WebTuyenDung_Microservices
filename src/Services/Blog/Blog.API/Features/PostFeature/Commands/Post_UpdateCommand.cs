@@ -5,6 +5,7 @@ using Blog.API.Features.PostFeature.Dtos;
 using Blog.API.Models;
 using BuildingBlock.Core.Result;
 using BuildingBlock.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.API.Features.PostFeature.Commands
 {
@@ -26,7 +27,14 @@ namespace Blog.API.Features.PostFeature.Commands
             {
                 throw new ApplicationException("Post not found");
             }
+            var category = await _dataContext.Categories
+                               .Where(s => s.Id == request.RequestData.CategoryId).FirstOrDefaultAsync();
+            if (category == null)
+            {
+                throw new ApplicationException("category is invalid");
+            }
 
+            Post.Category = category;
             Post.Slug = request.RequestData.Slug;
             Post.Content = request.RequestData.Content;
             Post.Title = request.RequestData.Title;

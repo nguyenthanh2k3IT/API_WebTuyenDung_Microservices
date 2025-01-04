@@ -12,5 +12,6 @@ namespace Blog.API.Models
         public string Title { get; set; }
         [Required] public string Content { get; set; }
         [Required] public string Image { get; set; }
+        public Guid? CategoryId { get; set; }
     }
 }
