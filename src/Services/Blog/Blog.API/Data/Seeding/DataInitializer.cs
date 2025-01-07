@@ -80,7 +80,7 @@ public class DataInitializer : IDataInitializer
             };
             Random random = new Random();
             var posts = new List<Post>();
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= 50; i++)
             {
                 var code = Generator.GenerateCode();
                 int randomIndex = random.Next(titles.Count);
