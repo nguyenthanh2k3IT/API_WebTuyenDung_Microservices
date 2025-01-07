@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Blog.API.Features.PostFeature.Commands;
 
 public record Post_UpdateCommand(PostRequest RequestData) : ICommand<Result<PostDto>>;
-public class PostUpdateCommandValidator : AbstractValidator<Post_AddCommand>
+public class PostUpdateCommandValidator : AbstractValidator<Post_UpdateCommand>
 {
     public PostUpdateCommandValidator()
     {

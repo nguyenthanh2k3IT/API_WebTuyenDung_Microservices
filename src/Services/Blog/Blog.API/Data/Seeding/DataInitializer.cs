@@ -80,6 +80,9 @@ public class DataInitializer : IDataInitializer
             };
             Random random = new Random();
             var posts = new List<Post>();
+            var categories = await _context.Categories.ToListAsync();
+            var tagNames = await _context.TagNames.ToListAsync();
+            var statuses = await _context.Statuses.ToListAsync();
             for (var i = 1; i <= 50; i++)
             {
                 var code = Generator.GenerateCode();
@@ -90,9 +93,9 @@ public class DataInitializer : IDataInitializer
                     Slug = code,
                     Title = $"{code} {randomTitle}",
                     Image = AvatarConstant.Default,
-                    Category = await _context.Categories.OrderBy(s => Guid.NewGuid()).FirstOrDefaultAsync(),
-                    Status = await _context.Statuses.OrderBy(s => Guid.NewGuid()).FirstOrDefaultAsync(),
-                    TagNames = await _context.TagNames.OrderBy(s => Guid.NewGuid()).Take(2).ToListAsync(),
+                    Category = categories.OrderBy(s => Guid.NewGuid()).FirstOrDefault(),
+                    Status = statuses.OrderBy(s => Guid.NewGuid()).FirstOrDefault(),
+                    TagNames = tagNames.OrderBy(s => Guid.NewGuid()).Take(2).ToList(),
                     Content = template
                 };
                 posts.Add(post);
