@@ -1,4 +1,7 @@
-﻿namespace BuildingBlock.Utilities;
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace BuildingBlock.Utilities;
 
 public static class Generator
 {
@@ -27,16 +30,36 @@ public static class Generator
     {
         try
         {
-            DateTime today = DateTime.Today;
-            string datePart = today.ToString("ddMMyy");
-            string randomString = GenerateRandomString(6).ToUpper();
-            string finalCode = $"{randomString}-{datePart}";
-            return finalCode;
+            // Tạo chuỗi ngẫu nhiên 6 ký tự
+            string randomString = CodeRandom(3).ToUpper();
+
+            // Chèn dấu gạch nối vào giữa
+            string formattedCode = $"{randomString.Substring(0, 3)}-{randomString.Substring(3, 3)}";
+
+            return formattedCode;
         }
-        catch (Exception ex)
+        catch
         {
-            return GenerateRandomString(6);
+            // Fallback trong trường hợp lỗi
+            return "ERR-XXX";
         }
+    }
+
+    private static string CodeRandom(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var random = new RNGCryptoServiceProvider();
+        var data = new byte[length];
+
+        random.GetBytes(data);
+
+        var result = new StringBuilder(length);
+        foreach (var b in data)
+        {
+            result.Append(chars[b % chars.Length]);
+        }
+
+        return result.ToString();
     }
 
     public static string GenerateRandomString(int length)
