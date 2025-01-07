@@ -32,7 +32,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet("pagination")]
-        public async Task<IActionResult> Pagination([FromQuery] PaginationRequest request)
+        public async Task<IActionResult> Pagination([FromQuery] PostPaginationRequest request)
         {
             return Ok(await Mediator.Send(new Post_PaginationQuery(request)));
         }

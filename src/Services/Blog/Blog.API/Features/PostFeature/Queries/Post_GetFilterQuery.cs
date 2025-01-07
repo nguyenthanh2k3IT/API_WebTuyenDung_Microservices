@@ -35,7 +35,7 @@ namespace Blog.API.Features.PostFeature.Queries
             if (!string.IsNullOrEmpty(request.RequestData.TextSearch))
             {
                 query = query.Where(s => s.Slug.Contains(request.RequestData.TextSearch) ||
-                                         s.Content.Contains(request.RequestData.TextSearch)||s.Title.Contains(request.RequestData.TextSearch));
+                                         s.Title.Contains(request.RequestData.TextSearch));
             }
 
             if (request.RequestData.Skip != null)
@@ -51,8 +51,6 @@ namespace Blog.API.Features.PostFeature.Queries
             return Result<IEnumerable<PostDto>>.Success(await query.ToListAsync());
         }
     }
-
-
 }
 
 

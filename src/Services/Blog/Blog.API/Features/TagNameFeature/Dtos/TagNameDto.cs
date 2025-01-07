@@ -1,22 +1,16 @@
 ﻿using Blog.API.Data;
-using Blog.API.Features.PostFeature.Dtos;
-using System.ComponentModel.DataAnnotations;
+namespace Blog.API.Features.TagNameFeature.Dtos;
 
-namespace Blog.API.Features.TagNameFeature.Dtos
+public class TagNameDto
 {
-    public class TagNameDto
+    public Guid Id { get; set; }
+    public string Slug { get; set; }
+    public string Name { get; set; }
+    private class Mapping : AutoMapper.Profile
     {
-        [Required] public string Slug { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-        private class Mapping : AutoMapper.Profile
+        public Mapping()
         {
-            public Mapping()
-            {
-                CreateMap<TagName, TagNameDto>();
-            }
+            CreateMap<TagName, TagNameDto>();
         }
     }
 }

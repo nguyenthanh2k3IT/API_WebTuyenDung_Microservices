@@ -1,19 +1,18 @@
 ﻿using Blog.API.Data;
-using Blog.API.Features.PostFeature.Dtos;
-using System.ComponentModel.DataAnnotations;
+using BuildingBlock.Core.Enums;
 
-namespace Blog.API.Features.StatusFeature.Dtos
+namespace Blog.API.Features.StatusFeature.Dtos;
+
+public class StatusDto
 {
-    public class StatusDto
+    public PostStatusEnum Id { get; set; }
+    public string Slug { get; set; }
+    public string Name { get; set; }
+    private class Mapping : AutoMapper.Profile
     {
-        [Required] public string Slug { get; set; }
-        [Required] public string Name { get; set; }
-        private class Mapping : AutoMapper.Profile
+        public Mapping()
         {
-            public Mapping()
-            {
-                CreateMap<Status, StatusDto>();
-            }
+            CreateMap<Status, StatusDto>();
         }
     }
 }

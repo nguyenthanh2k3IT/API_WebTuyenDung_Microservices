@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Blog.API.Features.PostSaveFeature.Dtos
+namespace Blog.API.Features.PostSaveFeature.Dtos;
+
+public class PostSaveDto
 {
-    public class PostSaveDto
-    {
-        [Required] public Guid PostId { get; set; }
-        [Required] public Guid UserId { get; set; }
-    }
+    [Required] public Guid PostId { get; set; }
+    [Required] public Guid UserId { get; set; }
 }

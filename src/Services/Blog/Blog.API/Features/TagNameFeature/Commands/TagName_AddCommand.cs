@@ -3,51 +3,49 @@ using Blog.API.Data;
 using Blog.API.Features.TagNameFeature.Dtos;
 using Blog.API.Models;
 using BuildingBlock.Core.Result;
+using BuildingBlock.Core.Validators;
 using BuildingBlock.CQRS;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
-namespace Blog.API.Features.TagNameFeature.Commands
+namespace Blog.API.Features.TagNameFeature.Commands;
+
+public record  TagName_AddCommand(StatusRequest RequestData) : ICommand<Result<TagNameDto>>;
+public class TagNameAddCommandValidator : AbstractValidator< TagName_AddCommand>
 {
-  
-    public record  TagName_AddCommand(StatusRequest RequestData) : ICommand<Result<TagNameDto>>;
-    public class TagNameAddCommandValidator : AbstractValidator< TagName_AddCommand>
+    public TagNameAddCommandValidator()
     {
-        public TagNameAddCommandValidator()
-        {
-            RuleFor(command => command.RequestData.Slug)
-                .NotEmpty().WithMessage("Id is required");
+        RuleFor(command => command.RequestData.Slug).FieldNotEmpty("Mã thẻ");
 
-            RuleFor(command => command.RequestData.Name)
-                .NotEmpty().WithMessage("Name is required");
-        }
+        RuleFor(command => command.RequestData.Name).FieldNotEmpty("Tên thẻ");
     }
-    public class  TagName_AddCommandHandler : ICommandHandler< TagName_AddCommand, Result<TagNameDto>>
+}
+public class  TagName_AddCommandHandler : ICommandHandler< TagName_AddCommand, Result<TagNameDto>>
+{
+    private readonly IMapper _mapper;
+    private readonly DataContext _dataContext;
+    public  TagName_AddCommandHandler(IMapper mapper, DataContext dataContext)
     {
-        private readonly IMapper _mapper;
-        private readonly DataContext _dataContext;
-        public  TagName_AddCommandHandler(IMapper mapper, DataContext dataContext)
+        _mapper = mapper;
+        _dataContext = dataContext;
+    }
+    public async Task<Result<TagNameDto>> Handle( TagName_AddCommand request, CancellationToken cancellationToken)
+    {
+        var exist = await _dataContext.TagNames.FirstOrDefaultAsync(s => s.Slug == request.RequestData.Slug);
+
+        if (exist != null)
         {
-            _mapper = mapper;
-            _dataContext = dataContext;
+            throw new ApplicationException("Mã thẻ đã được sử dụng");
         }
-        public async Task<Result<TagNameDto>> Handle( TagName_AddCommand request, CancellationToken cancellationToken)
+
+        var tagNames = new TagName()
         {
-            var exist = await _dataContext.TagNames.FindAsync(request.RequestData.Slug);
+            Slug = request.RequestData.Slug,
+            Name = request.RequestData.Name
+        };
+        _dataContext.TagNames.Add(tagNames);
+        await _dataContext.SaveChangesAsync(cancellationToken);
+        return Result<TagNameDto>.Success(_mapper.Map<TagNameDto>(tagNames));
 
-            if (exist != null)
-            {
-                throw new ApplicationException("Slug is already in uses");
-            }
-            var tagNames = new TagName()
-            {
-                Slug = request.RequestData.Slug,
-                Name = request.RequestData.Name
-
-            };
-            _dataContext.TagNames.Add(tagNames);
-            await _dataContext.SaveChangesAsync(cancellationToken);
-            return Result<TagNameDto>.Success(_mapper.Map<TagNameDto>(tagNames));
-
-        }
     }
 }

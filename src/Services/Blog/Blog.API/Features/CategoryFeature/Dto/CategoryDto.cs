@@ -1,21 +1,17 @@
 ﻿using Blog.API.Data;
-using System.ComponentModel.DataAnnotations;
 
-namespace Blog.API.Features.CategoryFeature.Dto
+namespace Blog.API.Features.CategoryFeature.Dto;
+
+public class CategoryDto
 {
-    public class CategoryDto
+    public Guid Id { get; set; }
+    public string Slug { get; set; }
+    public string Name { get; set; }
+    private class Mapping : AutoMapper.Profile
     {
-        [Required] public string Slug { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
-        private class Mapping : AutoMapper.Profile
+        public Mapping()
         {
-            public Mapping()
-            {
-                CreateMap<Category, CategoryDto>();
-            }
+            CreateMap<Category, CategoryDto>();
         }
     }
 }

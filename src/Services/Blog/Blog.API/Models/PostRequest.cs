@@ -1,17 +1,16 @@
-﻿using BuildingBlock.Core.Request;
-using System.ComponentModel.DataAnnotations;
+﻿using BuildingBlock.Core.Enums;
+using BuildingBlock.Core.Request;
 
-namespace Blog.API.Models
+namespace Blog.API.Models;
+
+public class PostRequest : AddOrUpdateRequest
 {
-    public class PostRequest:AddOrUpdateRequest
-    {
-        [Required] public string Slug { get; set; }
-
-        [Required]
-        [MaxLength(250)]
-        public string Title { get; set; }
-        [Required] public string Content { get; set; }
-        [Required] public string Image { get; set; }
-        public Guid? CategoryId { get; set; }
-    }
+    public Guid? Id { get; set; }
+    public string Slug { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public string Image { get; set; }
+    public Guid CategoryId { get; set; }
+    public PostStatusEnum StatusId { get; set; }
+    public List<Guid>? TagNames { get; set; }
 }

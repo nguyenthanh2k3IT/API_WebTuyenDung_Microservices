@@ -1,11 +1,8 @@
-﻿
-using Blog.API.Features.StatusFeature.Commands;
+﻿using Blog.API.Features.StatusFeature.Commands;
 using Blog.API.Features.StatusFeature.Queries;
 using Blog.API.Models;
 using BuildingBlock.Core.Request;
 using BuildingBlock.Core.WebApi;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers

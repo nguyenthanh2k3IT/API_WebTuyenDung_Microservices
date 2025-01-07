@@ -8,9 +8,6 @@ public  class BaseRequest
 	public string? TextSearch { get; set; }
 	public string? OrderCol { get; set; }
 	public string? OrderDir { get; set; }
-	public string? Status { get; set; }
-	public string? Type { get; set; }
-	public string? Date { get; set; }
 	[BindNever] public Guid? UserId { get; set; }
 	[BindNever] public RoleEnum? UserRoleId { get; set; }
 }
