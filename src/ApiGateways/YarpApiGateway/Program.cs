@@ -6,7 +6,25 @@ public class Program
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
-		builder.Services.AddReverseProxy()
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                builder =>
+                {
+                    /*builder.AllowAnyOrigin()
+							.AllowAnyMethod()
+							.AllowAnyHeader()
+							.WithExposedHeaders("Content-Disposition");*/
+
+                    builder.WithOrigins("http://localhost:3003")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .AllowCredentials()
+                       .WithExposedHeaders("Content-Disposition");
+                });
+        });
+
+        builder.Services.AddReverseProxy()
 			.LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 		var app = builder.Build();

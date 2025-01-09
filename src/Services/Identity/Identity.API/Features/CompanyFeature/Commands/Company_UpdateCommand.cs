@@ -82,7 +82,9 @@ public class Company_UpdateCommandHandler : ICommandHandler<Company_UpdateComman
         company.Size = size;
         company.SizeId = size.Id;
 
-        company.Provinces.Clear();
+        if(company.Provinces != null && company.Provinces.Any()) 
+            company.Provinces.Clear();
+
         if (request.RequestData.ProvinceIds != null && request.RequestData.ProvinceIds.Count > 0)
         {
             var ids = request.RequestData.ProvinceIds;

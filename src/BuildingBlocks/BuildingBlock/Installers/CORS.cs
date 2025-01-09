@@ -16,7 +16,7 @@ public static class CORSExtension
 							.AllowAnyHeader()
 							.WithExposedHeaders("Content-Disposition");*/
 
-					builder.WithOrigins("http://localhost:5173")
+					builder.WithOrigins("http://localhost:3003")
 					   .AllowAnyMethod()
 					   .AllowAnyHeader()
 					   .AllowCredentials()
