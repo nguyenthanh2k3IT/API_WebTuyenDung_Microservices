@@ -1,4 +1,7 @@
 
+using BuildingBlock.Installers;
+using System.Reflection;
+
 namespace Job.API
 {
     public class Program
@@ -7,27 +10,28 @@ namespace Job.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            #region BuildingBlock
+            builder.InstallSerilog();
+            builder.Services.InstallSwagger("v1", "JOBALLEY.API - JOB SERVICE");
+            builder.Services.InstallCORS();
+            builder.Services.InstallMediatR(Assembly.GetExecutingAssembly());
+
+            builder.Services.InstallAuthentication();
+            #endregion
+
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            app.UseSwaggerService();
+            app.UseCors();
             app.UseHttpsRedirection();
-
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
-
-
+            app.UseMiddleware<ExceptionMiddleware>();
+           // app.MigrationAutoUpdate<DataContext>();
             app.MapControllers();
 
             app.Run();

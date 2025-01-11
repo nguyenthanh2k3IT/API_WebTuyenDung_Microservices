@@ -10,6 +10,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/Job/Job.API/Job.API.csproj", "Services/Job/Job.API/"]
+COPY ["Services/Job/Job.Domain/Job.Domain.csproj", "Services/Job/Job.Domain/"]
+COPY ["Services/Job/Job.Application/Job.Application.csproj", "Services/Job/Job.Application/"]
+COPY ["Services/Job/Job.Infrastructure/Job.Infrastructure.csproj", "Services/Job/Job.Infrastructure/"]
 RUN dotnet restore "./Services/Job/Job.API/Job.API.csproj"
 COPY . .
 WORKDIR "/src/Services/Job/Job.API"
