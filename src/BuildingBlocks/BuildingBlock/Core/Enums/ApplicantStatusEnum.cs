@@ -3,6 +3,7 @@
 public enum ApplicantStatusEnum
 {
     Applied,
+    Seen,
     Unsuitable,
     Suitable
 }

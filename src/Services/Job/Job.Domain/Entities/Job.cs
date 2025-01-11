@@ -26,6 +26,7 @@ public class Job : BaseEntity<Guid>
 
     #region Foreign key
     public Guid? CompanyId { get; set; }
+    public Guid? CategoryId { get; set; }
     public Guid? RankId { get; set; }
     public Guid? GenderId { get; set; }
     public Guid? ExperienceId { get; set; }
@@ -35,6 +36,7 @@ public class Job : BaseEntity<Guid>
 
     #region Foreign entity
     [JsonIgnore] public RepCompany? Company { get; set; }
+    [JsonIgnore] public Category? Category { get; set; }
     [JsonIgnore] public Rank? Rank { get; set; }
     [JsonIgnore] public Gender? Gender { get; set; }
     [JsonIgnore] public Experience? Experience { get; set; }
