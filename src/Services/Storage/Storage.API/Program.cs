@@ -1,6 +1,9 @@
-
 using BuildingBlock.Installers;
-using System.Reflection;
+using CloudinaryDotNet;
+using Microsoft.Extensions.Options;
+using Storage.API.Configurations;
+using Storage.API.Interfaces;
+using Storage.API.Services;
 
 namespace Storage.API
 {
@@ -25,6 +28,16 @@ namespace Storage.API
             builder.Services.InstallCORS();
             builder.Services.InstallAuthentication();
             #endregion
+
+            var cloudinaryConfiguration = builder.Configuration.GetSection("CloudinarySettings");
+            builder.Services.Configure<CloudinarySettings>(cloudinaryConfiguration);
+
+            builder.Services.AddSingleton(provider =>
+            {
+                var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+                return new Cloudinary(new Account(config.CloudName, config.ApiKey, config.ApiSecret));
+            });
+            builder.Services.AddTransient<IStorageService, StorageService>();
 
             var app = builder.Build();
 

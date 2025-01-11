@@ -13,6 +13,7 @@ COPY ["Services/Job/Job.API/Job.API.csproj", "Services/Job/Job.API/"]
 COPY ["Services/Job/Job.Domain/Job.Domain.csproj", "Services/Job/Job.Domain/"]
 COPY ["Services/Job/Job.Application/Job.Application.csproj", "Services/Job/Job.Application/"]
 COPY ["Services/Job/Job.Infrastructure/Job.Infrastructure.csproj", "Services/Job/Job.Infrastructure/"]
+COPY ["BuildingBlocks/BuildingBlock/BuildingBlock.csproj", "BuildingBlocks/BuildingBlock/"]
 RUN dotnet restore "./Services/Job/Job.API/Job.API.csproj"
 COPY . .
 WORKDIR "/src/Services/Job/Job.API"
