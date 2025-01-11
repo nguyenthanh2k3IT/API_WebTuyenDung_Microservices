@@ -2,3 +2,8 @@
 global using Microsoft.EntityFrameworkCore;
 global using Job.Domain.Entities;
 global using Job.Application.Interfaces.Data;
+global using Job.Application.Interfaces.Seedworks;
+global using Job.Application.Interfaces.Repositories;
+global using Job.Infrastructure.Data;
+global using Job.Infrastructure.Seedworks;
+global using BuildingBlock.Core.Enums;

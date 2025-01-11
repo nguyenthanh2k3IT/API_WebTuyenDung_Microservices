@@ -1,23 +1,20 @@
-﻿namespace Job.Application.Interfaces.Seedworks;
+﻿using Job.Application.Interfaces.Repositories;
+
+namespace Job.Application.Interfaces.Seedworks;
 
 public interface IUnitOfWork
 {
-    /*IGenderRepository Genders { get; }
-    IColorRepository Colors { get; }
-    IBrandRepository Brands { get; }
+    IApplicantRepository Applicants { get; }
+    IApplicantStatusRepository ApplicantStatuses { get; }
+    IExperienceRepository Experience { get; }
     ICategoryRepository Categories { get; }
-    ICommentRepository Comments { get; }
-    IImageRepository Images { get; }
-    IProductItemRepository ProductItems { get; }
-    IProductRepository Products { get; }
-    IRatingRepository Ratings { get; }
-    ISizeCategoryRepository SizeCategories { get; }
-    ISizeRepository Sizes { get; }
-    IUserCommentRepository UserComments { get; }
-    IVariationRepository Variations { get; }
-    IWishlistRepository Wishlists { get; }
-    ICategoryGenderRepository CategoryGenders { get; }*/
-
+    IGenderRepository Genders { get; }
+    IJobRepository Jobs { get; }
+    IPopularRepository Populars { get; }
+    IProvinceRepository Provinces { get; }
+    IRankRepository Ranks { get; }
+    IRepCompanyRepository Companies { get; }
+    IWorkTypeRepository WorkTypes { get; }
     Task RemoveCacheAsync(string key);
     Task<int> CompleteAsync();
     void Dispose();
