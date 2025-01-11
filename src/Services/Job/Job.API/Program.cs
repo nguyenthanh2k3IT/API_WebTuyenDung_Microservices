@@ -26,7 +26,7 @@ namespace Job.API
             builder.Services.InstallSwagger("v1", "JOBALLEY.API - JOB SERVICE");
             builder.Services.InstallCORS();
             builder.Services.InstallMediatR(Assembly.GetExecutingAssembly());
-
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.InstallAuthentication();
             #endregion
 

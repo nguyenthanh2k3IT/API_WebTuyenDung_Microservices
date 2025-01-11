@@ -1,4 +1,9 @@
-﻿using Job.Infrastructure.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BuildingBlock.Core.Abstractions;
+using BuildingBlock.Core.Paging;
+using BuildingBlock.Core.Request;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
 namespace Job.Infrastructure.Seedworks;
@@ -6,12 +11,14 @@ namespace Job.Infrastructure.Seedworks;
 public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : class
 {
     protected DataContext _context;
+    protected IMapper _mapper;
     protected DbSet<TEntity> _dbSet;
 
-    public GenericRepository(DataContext context)
+    public GenericRepository(DataContext context, IMapper mapper)
     {
         _context = context;
         _dbSet = context.Set<TEntity>();
+        _mapper = mapper;
     }
 
     #region =========== Common ===========
@@ -218,7 +225,8 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
     public async Task<List<TEntity>> GetAllAsync()
     {
-        var data = await _dbSet.ToListAsync();
+        IQueryable<TEntity> query = _dbSet;
+        var data = await query.ToListAsync();
         return data;
     }
 
@@ -303,4 +311,107 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
     }
     #endregion
 
+    #region Functional Queries
+    public async Task<PaginatedList<TDto>> GetPaginatedList<TDto>
+        (PaginationRequest request, IEnumerable<string> searchColumns = null)
+        where TDto : class
+    {
+        var orderCol = request.OrderCol;
+        var orderDir = request.OrderDir;
+
+        var query = _dbSet.OrderedListQuery(orderCol, orderDir)
+                          .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(request.TextSearch) && searchColumns != null)
+        {
+            query = ApplySearchFilter(query, request.TextSearch, searchColumns);
+        }
+
+        var count = await query.CountAsync();
+        var items = await query.ProjectTo<TDto>(_mapper.ConfigurationProvider)
+                               .Skip((request.PageIndex - 1) * request.PageSize)
+                               .Take(request.PageSize)
+                               .ToListAsync();
+
+        return new PaginatedList<TDto>(items, count, request.PageIndex, request.PageSize);
+    }
+
+    public async Task<IEnumerable<TDto>> GetAllList<TDto>
+        (BaseRequest request, IEnumerable<string> searchColumns = null)
+        where TDto : class
+    {
+        var orderCol = request.OrderCol;
+        var orderDir = request.OrderDir;
+
+        var query = _dbSet.OrderedListQuery(orderCol, orderDir)
+                          .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(request.TextSearch) && searchColumns != null)
+        {
+            query = ApplySearchFilter(query, request.TextSearch, searchColumns);
+        }
+
+        return await query.ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task<IEnumerable<TDto>> GetFilterList<TDto>
+        (FilterRequest request, IEnumerable<string> searchColumns = null)
+        where TDto : class
+    {
+        var orderCol = request.OrderCol;
+        var orderDir = request.OrderDir;
+
+        var query = _dbSet.OrderedListQuery(orderCol, orderDir)
+                          .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(request.TextSearch) && searchColumns != null)
+        {
+            query = ApplySearchFilter(query, request.TextSearch, searchColumns);
+        }
+
+        if (request.Skip != null)
+        {
+            query = query.Skip(request.Skip.Value);
+        }
+
+        if (request.TotalRecord != null)
+        {
+            query = query.Take(request.TotalRecord.Value);
+        }
+
+        return await query.ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    public async Task<TDto> GetOneRecord<TDto>(TKey id) where TDto : class
+    {
+        var idProperty = typeof(TEntity).GetProperty("Id");
+
+        if (idProperty == null)
+        {
+            throw new ApplicationException($"Entity does not have a column named 'Id'.");
+        }
+
+        var parameter = Expression.Parameter(typeof(TEntity), "e");
+        var property = Expression.Property(parameter, idProperty);
+        var value = Expression.Constant(id);
+        var equalExpression = Expression.Equal(property, value);
+
+        var lambda = Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
+
+        var entity = await _dbSet.Where(lambda)
+                                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
+                                 .FirstOrDefaultAsync();
+
+        return entity;
+    }
+    #endregion
+
+    private IQueryable<TEntity> ApplySearchFilter(
+        IQueryable<TEntity> query,
+        string textSearch,
+        IEnumerable<string> searchColumns)
+    {
+        var predicate = string.Join(" || ", searchColumns.Select(column => $"{column}.Contains(@0)"));
+        return query.Where(predicate, textSearch);
+    }
 }

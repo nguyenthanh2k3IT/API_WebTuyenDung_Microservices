@@ -1,12 +1,30 @@
-﻿namespace Job.Application.Interfaces.Seedworks;
+﻿using BuildingBlock.Core.Paging;
+using BuildingBlock.Core.Request;
+
+namespace Job.Application.Interfaces.Seedworks;
 
 public interface IGenericRepository<TEntity, in TKey> where TEntity : class
 {
+    // ================================ FUNCTIONAL QUERIES =================================
+    Task<PaginatedList<TDto>> GetPaginatedList<TDto>
+        (PaginationRequest request, IEnumerable<string> searchColumns = null) 
+        where TDto : class;
+
+    Task<IEnumerable<TDto>> GetAllList<TDto>
+        (BaseRequest request, IEnumerable<string> searchColumns = null)
+        where TDto : class;
+
+    Task<IEnumerable<TDto>> GetFilterList<TDto>
+        (FilterRequest request, IEnumerable<string> searchColumns = null)
+        where TDto : class;
+
+    Task<TDto> GetOneRecord<TDto>(TKey id) where TDto : class;
+
     // ===================================== QUERIES ======================================= 
     IQueryable<TEntity> Queryable();
+    Task<List<TEntity>> GetAllAsync();
     Task<TEntity?> FindAsync(TKey id, bool isThrow = false);
     Task<TEntity?> FindSlugAsync(string slug, bool isThrow = false);
-    Task<List<TEntity>> GetAllAsync();
     Task<TEntity?> IsSlugUnique(string slug, bool isThrow = false);
     Task<List<TEntity>> FindByIds(IEnumerable<TKey> ids, bool isThrow = false);
 

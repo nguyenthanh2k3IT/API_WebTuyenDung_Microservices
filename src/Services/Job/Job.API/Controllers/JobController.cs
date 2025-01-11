@@ -4,9 +4,16 @@
 [ApiController]
 public class JobController : BaseController
 {
-    [HttpGet]
-    public IActionResult Test()
+    private readonly IUnitOfWork _unitOfWork;
+    public JobController(IUnitOfWork unitOfWork)
     {
-        return Ok("ok");
+        _unitOfWork = unitOfWork;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Test([FromQuery] PaginationRequest request)
+    {
+        var searchColumns = new[] { "Name", "Slug" };
+        return Ok(await _unitOfWork.Categories.GetPaginatedList<CategoryDto>(request, searchColumns));
     }
 }

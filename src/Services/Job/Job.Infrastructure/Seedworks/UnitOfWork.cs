@@ -1,9 +1,11 @@
-﻿namespace Job.Infrastructure.Seedworks;
+﻿using AutoMapper;
+
+namespace Job.Infrastructure.Seedworks;
 
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private readonly DataContext _context;
-
+    private readonly IMapper _mapper;
     public IGenderRepository Genders { get; private set; }
     public ICategoryRepository Categories { get; private set; }
     public IApplicantRepository Applicants { get; private set; }
@@ -16,20 +18,21 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public IRepCompanyRepository Companies { get; private set; }
     public IWorkTypeRepository WorkTypes { get; private set; }
 
-    public UnitOfWork(DataContext context)
+    public UnitOfWork(DataContext context, IMapper mapper)
     {
         _context = context;
-        Genders = new GenderRepository(_context);
-        Categories = new CategoryRepository(_context);
-        Applicants = new ApplicantRepository(_context);
-        ApplicantStatuses = new ApplicantStatusRepository(_context);
-        Experience = new ExperienceRepository(_context);
-        Jobs = new JobRepository(_context);
-        Populars = new PopularRepository(_context);
-        Provinces = new ProvinceRepository(_context);
-        Ranks = new RankRepository(_context);
-        Companies = new RepCompanyRepository(_context);
-        WorkTypes = new WorkTypeRepository(_context);
+        _mapper = mapper;
+        Genders = new GenderRepository(_context, _mapper);
+        Categories = new CategoryRepository(_context, _mapper);
+        Applicants = new ApplicantRepository(_context, _mapper);
+        ApplicantStatuses = new ApplicantStatusRepository(_context, _mapper);
+        Experience = new ExperienceRepository(_context, _mapper);
+        Jobs = new JobRepository(_context, _mapper);
+        Populars = new PopularRepository(_context, _mapper);
+        Provinces = new ProvinceRepository(_context, _mapper);
+        Ranks = new RankRepository(_context, _mapper);
+        Companies = new RepCompanyRepository(_context, _mapper);
+        WorkTypes = new WorkTypeRepository(_context, _mapper);
     }
 
     public async Task<int> CompleteAsync()
