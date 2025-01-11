@@ -1,14 +1,12 @@
-﻿using BuildingBlock.Core.Enums;
-
-namespace Job.API.Controllers;
+﻿namespace Job.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ApplicantStatusController : BaseController
+public class WorkTypeController : BaseController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEnumerable<string> searchColumns = new[] { "Name", "Slug" };
-    public ApplicantStatusController(IUnitOfWork unitOfWork)
+    public WorkTypeController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -16,35 +14,35 @@ public class ApplicantStatusController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] BaseRequest request)
     {
-        var data = await _unitOfWork.ApplicantStatuses.GetAllList<ApplicantStatusDto>(request, searchColumns);
+        var data = await _unitOfWork.WorkTypes.GetAllList<WorkTypeDto>(request, searchColumns);
         return ReturnResponse(data);
     }
 
     [HttpGet("slug/{slug}")]
     public async Task<IActionResult> GetBySlug([FromRoute] string slug)
     {
-        var data = await _unitOfWork.ApplicantStatuses.GetSlugOneRecord<ApplicantStatusDto>(slug);
+        var data = await _unitOfWork.WorkTypes.GetSlugOneRecord<WorkTypeDto>(slug);
         return ReturnResponse(data);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] ApplicantStatusEnum id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
-        var data = await _unitOfWork.ApplicantStatuses.GetOneRecord<ApplicantStatusDto>(id);
+        var data = await _unitOfWork.WorkTypes.GetOneRecord<WorkTypeDto>(id);
         return ReturnResponse(data);
     }
 
     [HttpGet("filter")]
     public async Task<IActionResult> Filter([FromQuery] FilterRequest request)
     {
-        var data = await _unitOfWork.ApplicantStatuses.GetFilterList<ApplicantStatusDto>(request, searchColumns);
+        var data = await _unitOfWork.WorkTypes.GetFilterList<WorkTypeDto>(request, searchColumns);
         return ReturnResponse(data);
     }
 
     [HttpGet("pagination")]
     public async Task<IActionResult> Pagination([FromQuery] PaginationRequest request)
     {
-        var data = await _unitOfWork.ApplicantStatuses.GetPaginatedList<ApplicantStatusDto>(request, searchColumns);
+        var data = await _unitOfWork.WorkTypes.GetPaginatedList<WorkTypeDto>(request, searchColumns);
         return ReturnResponse(data);
     }
 }
