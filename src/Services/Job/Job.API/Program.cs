@@ -1,5 +1,7 @@
 
 using BuildingBlock.Installers;
+using Job.Application;
+using Job.Infrastructure;
 using System.Reflection;
 
 namespace Job.API
@@ -13,6 +15,11 @@ namespace Job.API
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            #region DependencyInjection
+            builder.Services.AddApplicationServices(builder.Configuration);
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            #endregion
 
             #region BuildingBlock
             builder.InstallSerilog();

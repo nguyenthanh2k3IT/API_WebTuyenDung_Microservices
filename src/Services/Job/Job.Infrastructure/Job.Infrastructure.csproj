@@ -25,9 +25,4 @@
     <ProjectReference Include="..\Job.Domain\Job.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-    <Folder Include="Seedworks\" />
-  </ItemGroup>
-
 </Project>

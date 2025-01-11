@@ -100,7 +100,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_URLS=https://+:8081
-      - ConnectionStrings__Database=Server=joballey_mssql,1433;Database=db_blog;User Id=sa;Password=.abcABC123#;Encrypt=False;TrustServerCertificate=True
+      - ConnectionStrings__Database=Server=joballey_pg;Port=5432;Database=db_job;Username=postgres;Password=postgres;Include Error Detail=true
       - HostSettings__Environment=docker
     depends_on:
       - joballey_pg

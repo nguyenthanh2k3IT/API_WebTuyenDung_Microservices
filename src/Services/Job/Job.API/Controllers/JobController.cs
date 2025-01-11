@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Job.API.Controllers;
 
-namespace Job.API.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class JobController : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class JobController : ControllerBase
+    [HttpGet]
+    public IActionResult Test()
     {
+        return Ok("ok");
     }
 }

@@ -17,7 +17,7 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<IDataContext>(provider => provider.GetRequiredService<DataContext>());
         services.AddScoped<IDataInitializer, DataInitializer>();
-        //services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }
