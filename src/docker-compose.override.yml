@@ -95,6 +95,23 @@ services:
     networks:
       - joballey_network
 
+  job.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_URLS=https://+:8081
+      - ConnectionStrings__Database=Server=joballey_mssql,1433;Database=db_blog;User Id=sa;Password=.abcABC123#;Encrypt=False;TrustServerCertificate=True
+      - HostSettings__Environment=docker
+    depends_on:
+      - joballey_pg
+    ports:
+      - 7004:8081
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    networks:
+      - joballey_network
+
   yarpapigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -120,5 +137,6 @@ networks:
 volumes:
   postgres_joballey_pg:
   mssql_data:  
+
 
 

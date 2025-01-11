@@ -7,7 +7,8 @@
         "identity.api": "StartDebugging",
         "yarpapigateway": "StartDebugging",
         "blog.api": "StartDebugging",
-        "storage.api": "StartDebugging"
+        "storage.api": "StartDebugging",
+        "job.api": "StartDebugging"
       }
     }
   }

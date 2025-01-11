@@ -39,6 +39,12 @@ services:
       context: .
       dockerfile: Services/Storage/Storage.API/Dockerfile
 
+  job.api:
+    image: ${DOCKER_REGISTRY-}jobapi
+    build:
+      context: .
+      dockerfile: Services/Job/Job.API/Dockerfile
+
   yarpapigateway:
     image: ${DOCKER_REGISTRY-}yarpapigateway
     build:
@@ -51,6 +57,7 @@ volumes:
 networks:
   joballey_network:
     driver: bridge
+
 
 
 
