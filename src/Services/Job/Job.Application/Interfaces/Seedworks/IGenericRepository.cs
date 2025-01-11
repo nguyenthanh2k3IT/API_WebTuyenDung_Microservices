@@ -20,6 +20,8 @@ public interface IGenericRepository<TEntity, in TKey> where TEntity : class
 
     Task<TDto> GetOneRecord<TDto>(TKey id) where TDto : class;
 
+    Task<TDto> GetSlugOneRecord<TDto>(string slug) where TDto : class;
+
     // ===================================== QUERIES ======================================= 
     IQueryable<TEntity> Queryable();
     Task<List<TEntity>> GetAllAsync();

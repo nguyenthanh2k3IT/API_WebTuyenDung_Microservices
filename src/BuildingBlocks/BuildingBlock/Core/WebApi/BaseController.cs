@@ -1,4 +1,5 @@
 ﻿using BuildingBlock.Core.Constants;
+using BuildingBlock.Core.Result;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,5 +88,10 @@ namespace BuildingBlock.Core.WebApi
 				Expires = JWTConstant.RefreshTokenValidTo()
 			});
 		}
-	}
+
+		protected IActionResult ReturnResponse(object data)
+		{
+			return Ok(Result<object>.Success(data));
+		}
+    }
 }

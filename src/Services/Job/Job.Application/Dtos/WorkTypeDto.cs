@@ -1,12 +1,12 @@
 ﻿namespace Job.Application.Dtos;
 
-public class CategoryDto : BaseDto<Guid>
+public class WorkTypeDto : BaseDto<Guid>
 {
     private class Mapping : AutoMapper.Profile
     {
         public Mapping()
         {
-            CreateMap<Category, CategoryDto>();
+            CreateMap<WorkType, WorkTypeDto>();
         }
     }
 }

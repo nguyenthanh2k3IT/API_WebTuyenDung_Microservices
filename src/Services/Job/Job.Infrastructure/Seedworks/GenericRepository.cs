@@ -404,6 +404,29 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
         return entity;
     }
+
+    public async Task<TDto> GetSlugOneRecord<TDto>(string slug) where TDto : class
+    {
+        var idProperty = typeof(TEntity).GetProperty("Slug");
+
+        if (idProperty == null)
+        {
+            throw new ApplicationException($"Entity does not have a column named 'Slug'.");
+        }
+
+        var parameter = Expression.Parameter(typeof(TEntity), "e");
+        var property = Expression.Property(parameter, idProperty);
+        var value = Expression.Constant(slug);
+        var equalExpression = Expression.Equal(property, value);
+
+        var lambda = Expression.Lambda<Func<TEntity, bool>>(equalExpression, parameter);
+
+        var entity = await _dbSet.Where(lambda)
+                                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
+                                 .FirstOrDefaultAsync();
+
+        return entity;
+    }
     #endregion
 
     private IQueryable<TEntity> ApplySearchFilter(
