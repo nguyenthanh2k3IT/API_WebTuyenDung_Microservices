@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Job.Infrastructure.Data;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -11,13 +12,12 @@ public static class DependencyInjection
         var cnStr = configuration.GetConnectionString("Database");
         Console.WriteLine(cnStr);
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        //services.AddDbContext<DataContext>(options => options.UseNpgsql(cnStr));
+        services.AddDbContext<DataContext>(options => options.UseNpgsql(cnStr));
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         services.AddSingleton(TimeProvider.System);
-        /*services.AddScoped<IDataContext>(provider => provider.GetRequiredService<DataContext>());
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IDataContextInitializer, DataContextInitializer>();
-        services.AddScoped<IFileStorageServices, FileStorageServices>();*/
+        services.AddScoped<IDataContext>(provider => provider.GetRequiredService<DataContext>());
+        services.AddScoped<IDataInitializer, DataInitializer>();
+        //services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }
