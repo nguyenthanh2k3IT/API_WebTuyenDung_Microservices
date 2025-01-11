@@ -7,3 +7,4 @@ global using Job.Application.Interfaces.Repositories;
 global using Job.Infrastructure.Data;
 global using Job.Infrastructure.Seedworks;
 global using BuildingBlock.Core.Enums;
+global using Job.Infrastructure.Repositories;
