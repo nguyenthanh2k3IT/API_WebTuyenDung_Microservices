@@ -46,6 +46,22 @@ public class GenderController : BaseController
         return ReturnResponse(data);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Gender request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.Genders.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] Gender request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.Genders.CreateAsync(request);
+        return ReturnResponse(data);
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {

@@ -46,6 +46,22 @@ public class ExperienceController : BaseController
         return ReturnResponse(data);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Experience request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.Experience.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] Experience request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.Experience.CreateAsync(request);
+        return ReturnResponse(data);
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {

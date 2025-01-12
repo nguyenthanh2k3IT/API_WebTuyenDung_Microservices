@@ -46,6 +46,22 @@ public class RankController : BaseController
         return ReturnResponse(data);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Rank request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.Ranks.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] Rank request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.Ranks.CreateAsync(request);
+        return ReturnResponse(data);
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {

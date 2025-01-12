@@ -46,6 +46,22 @@ public class PopularController : BaseController
         return ReturnResponse(data);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Popular request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.Populars.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] Popular request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.Populars.CreateAsync(request);
+        return ReturnResponse(data);
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {

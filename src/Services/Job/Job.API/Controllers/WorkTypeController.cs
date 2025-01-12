@@ -46,6 +46,22 @@ public class WorkTypeController : BaseController
         return ReturnResponse(data);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] WorkType request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.WorkTypes.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] WorkType request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.WorkTypes.CreateAsync(request);
+        return ReturnResponse(data);
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {

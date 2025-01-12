@@ -8,3 +8,4 @@ global using Job.Infrastructure.Data;
 global using Job.Infrastructure.Seedworks;
 global using BuildingBlock.Core.Enums;
 global using Job.Infrastructure.Repositories;
+global using Job.Application.Dtos;
