@@ -43,7 +43,7 @@ public class ProvinceController : BaseController
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {
         request.ModifiedUser = GetUserId();
-        var ids = request.Ids.Select(s => Guid.Parse(s)).ToList();
+        var ids = request.Ids.Select(s => s.ToString()).ToList();
         var res = await _unitOfWork.Provinces.DeleteRecords(ids, GetUserId());
         return ReturnResponse(res);
     }

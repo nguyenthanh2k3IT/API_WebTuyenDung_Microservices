@@ -219,7 +219,7 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
         var entity = await _dbSet.FindAsync(id);
         if (entity == null && isThrow)
         {
-            throw new ApplicationException($"{typeof(TEntity).Name} not found: {id}");
+            throw new ApplicationException($"Không tìm thấy dữ liệu với ID: {id}");
         }
         return entity;
     }
@@ -251,7 +251,7 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
         if (entity != null && isThrow)
         {
-            throw new ApplicationException($"Data with slug '{slug}' is already in use.");
+            throw new ApplicationException($"Mã '{slug}' đã được sử dụng.");
         }
 
         return entity;
@@ -277,7 +277,7 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
         if (entity == null && isThrow)
         {
-            throw new ApplicationException($"Not found data with slug: {slug}");
+            throw new ApplicationException($"Không tìm thấy dữ liệu với mã: {slug}");
         }
 
         return entity;
@@ -305,7 +305,7 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
         if (!entities.Any() && isThrow)
         {
-            throw new ApplicationException($"Data not found for ids: {string.Join(";", ids)}");
+            throw new ApplicationException($"Không tìm thấy dữ liệu với ID: {string.Join(";", ids)}");
         }
 
         return entities;

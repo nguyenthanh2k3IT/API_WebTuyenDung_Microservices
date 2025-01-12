@@ -46,19 +46,21 @@ public class CategoryController : BaseController
         return ReturnResponse(data);
     }
 
-    /* [HttpPut]
-     public async Task<IActionResult> Update([FromBody] StatusRequest request)
-     {
-         request.CreatedUser = GetUserId();
-         return Ok(await Mediator.Send(new Status_UpdateCommand(request)));
-     }
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Category request)
+    {
+        request.ModifiedUser = GetUserId();
+        var data = await _unitOfWork.Categories.UpdateAsync(request);
+        return ReturnResponse(data);
+    }
 
-     [HttpPost]
-     public async Task<IActionResult> Add([FromBody] StatusRequest request)
-     {
-         request.CreatedUser = GetUserId();
-         return Ok(await Mediator.Send(new Status_AddCommand(request)));
-     }*/
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] Category request)
+    {
+        request.CreatedUser = GetUserId();
+        var data = await _unitOfWork.Categories.CreateAsync(request);
+        return ReturnResponse(data);
+    }
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
