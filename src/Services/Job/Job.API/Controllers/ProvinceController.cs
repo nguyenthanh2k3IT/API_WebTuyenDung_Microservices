@@ -38,4 +38,13 @@ public class ProvinceController : BaseController
         var data = await _unitOfWork.Provinces.GetPaginatedList<ProvinceDto>(request, searchColumns);
         return ReturnResponse(data);
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
+    {
+        request.ModifiedUser = GetUserId();
+        var ids = request.Ids.Select(s => Guid.Parse(s)).ToList();
+        var res = await _unitOfWork.Provinces.DeleteRecords(ids, GetUserId());
+        return ReturnResponse(res);
+    }
 }

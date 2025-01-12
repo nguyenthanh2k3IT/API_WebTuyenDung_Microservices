@@ -45,4 +45,13 @@ public class WorkTypeController : BaseController
         var data = await _unitOfWork.WorkTypes.GetPaginatedList<WorkTypeDto>(request, searchColumns);
         return ReturnResponse(data);
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
+    {
+        request.ModifiedUser = GetUserId();
+        var ids = request.Ids.Select(s => Guid.Parse(s)).ToList();
+        var res = await _unitOfWork.WorkTypes.DeleteRecords(ids, GetUserId());
+        return ReturnResponse(res);
+    }
 }

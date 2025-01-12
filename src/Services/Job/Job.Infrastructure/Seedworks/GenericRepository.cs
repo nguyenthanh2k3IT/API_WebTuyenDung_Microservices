@@ -5,6 +5,7 @@ using BuildingBlock.Core.Paging;
 using BuildingBlock.Core.Request;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace Job.Infrastructure.Seedworks;
 
@@ -427,6 +428,54 @@ public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey
 
         return entity;
     }
+
+    public async Task<bool> DeleteRecords(List<TKey> ids,Guid? userId = null)
+    {
+        // Lấy thuộc tính Id của thực thể
+        var idProperty = typeof(TEntity).GetProperty("Id");
+        if (idProperty == null)
+        {
+            throw new ApplicationException($"Entity '{typeof(TEntity).Name}' does not have a property named 'Id'.");
+        }
+
+        // Tạo điều kiện: e => ids.Contains(e.Id)
+        var parameter = Expression.Parameter(typeof(TEntity), "e");
+        var property = Expression.Property(parameter, idProperty);
+
+        // Tạo giá trị danh sách Ids dưới dạng Expression
+        var idsExpression = Expression.Constant(ids);
+
+        // Tạo phương thức Contains
+        var containsMethod = typeof(List<TKey>).GetMethod("Contains", new[] { typeof(TKey) });
+        if (containsMethod == null)
+        {
+            throw new ApplicationException("Could not find 'Contains' method on List<TKey>.");
+        }
+
+        // Tạo biểu thức: ids.Contains(e.Id)
+        var containsExpression = Expression.Call(idsExpression, containsMethod, property);
+
+        // Tạo lambda: e => ids.Contains(e.Id)
+        var lambda = Expression.Lambda<Func<TEntity, bool>>(containsExpression, parameter);
+
+        // Lấy các bản ghi thỏa điều kiện
+        var entities = await _dbSet.Where(lambda).ToListAsync();
+
+        if (entities == null || entities.Count == 0)
+        {
+            throw new ApplicationException($"Không tìm thấy dữ liệu với các Id: {string.Join(";", ids)}");
+        }
+
+        // Đánh dấu các bản ghi là đã xóa
+        foreach (var entity in entities)
+        {
+            SetSoftDeletedAttribute(entity, userId);
+        }
+
+        _dbSet.UpdateRange(entities);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
     #endregion
 
     private IQueryable<TEntity> ApplySearchFilter(

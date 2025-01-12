@@ -3,7 +3,7 @@ using BuildingBlock.Core.Request;
 
 namespace Job.Application.Interfaces.Seedworks;
 
-public interface IGenericRepository<TEntity, in TKey> where TEntity : class
+public interface IGenericRepository<TEntity, TKey> where TEntity : class
 {
     // ================================ FUNCTIONAL QUERIES =================================
     Task<PaginatedList<TDto>> GetPaginatedList<TDto>
@@ -21,6 +21,8 @@ public interface IGenericRepository<TEntity, in TKey> where TEntity : class
     Task<TDto> GetOneRecord<TDto>(TKey id) where TDto : class;
 
     Task<TDto> GetSlugOneRecord<TDto>(string slug) where TDto : class;
+
+    Task<bool> DeleteRecords(List<TKey> ids, Guid? userId = null);
 
     // ===================================== QUERIES ======================================= 
     IQueryable<TEntity> Queryable();

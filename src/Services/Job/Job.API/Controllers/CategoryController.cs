@@ -46,24 +46,26 @@ public class CategoryController : BaseController
         return ReturnResponse(data);
     }
 
-   /* [HttpPut]
-    public async Task<IActionResult> Update([FromBody] StatusRequest request)
-    {
-        request.CreatedUser = GetUserId();
-        return Ok(await Mediator.Send(new Status_UpdateCommand(request)));
-    }
+    /* [HttpPut]
+     public async Task<IActionResult> Update([FromBody] StatusRequest request)
+     {
+         request.CreatedUser = GetUserId();
+         return Ok(await Mediator.Send(new Status_UpdateCommand(request)));
+     }
 
-    [HttpPost]
-    public async Task<IActionResult> Add([FromBody] StatusRequest request)
-    {
-        request.CreatedUser = GetUserId();
-        return Ok(await Mediator.Send(new Status_AddCommand(request)));
-    }
+     [HttpPost]
+     public async Task<IActionResult> Add([FromBody] StatusRequest request)
+     {
+         request.CreatedUser = GetUserId();
+         return Ok(await Mediator.Send(new Status_AddCommand(request)));
+     }*/
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] DeleteRequest request)
     {
         request.ModifiedUser = GetUserId();
-        return Ok(await Mediator.Send(new Status_DeleteCommand(request)));
-    }*/
+        var ids = request.Ids.Select(s => Guid.Parse(s)).ToList();
+        var res = await _unitOfWork.Categories.DeleteRecords(ids, GetUserId());
+        return ReturnResponse(res);
+    }
 }
