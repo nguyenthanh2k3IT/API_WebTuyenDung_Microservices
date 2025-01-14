@@ -2,13 +2,14 @@
 using BuildingBlock.Installers;
 using Job.Application;
 using Job.Infrastructure;
+using Job.Infrastructure.Data;
 using System.Reflection;
 
 namespace Job.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -38,8 +39,9 @@ namespace Job.API
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<ExceptionMiddleware>();
-           // app.MigrationAutoUpdate<DataContext>();
+            app.MigrationAutoUpdate<DataContext>();
             app.MapControllers();
+            await app.SeedingData();
 
             app.Run();
         }
