@@ -28,7 +28,7 @@ namespace Blog.API.Features.PostFeature.Queries
             var orderCol = request.RequestData.OrderCol;
             var orderDir = request.RequestData.OrderDir;
 
-            var query = _context.Categories.OrderedListQuery(orderCol, orderDir)
+            var query = _context.Posts.OrderedListQuery(orderCol, orderDir)
                                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                                 .AsNoTracking();
 

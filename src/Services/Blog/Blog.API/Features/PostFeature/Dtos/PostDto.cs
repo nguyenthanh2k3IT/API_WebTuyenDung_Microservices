@@ -21,8 +21,8 @@ public class PostDto
         public Mapping()
         {
             CreateMap<Post, PostDto>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status ?? null))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category ?? null))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.TagNames, opt => opt.MapFrom(src => src.TagNames));
         }
     }

@@ -4,7 +4,6 @@ using BuildingBlock.Core.Request;
 using BuildingBlock.Core.Result;
 using BuildingBlock.CQRS;
 using Microsoft.EntityFrameworkCore;
-using System.Windows.Input;
 
 namespace Blog.API.Features.CategoryFeature.Commands
 {

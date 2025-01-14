@@ -37,8 +37,6 @@ namespace Blog.API.Features.CategoryFeature.Queries
                                          s.Slug.Contains(request.RequestData.TextSearch));
             }
 
-           
-
             var paging = await query.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
                                     .PaginatedListAsync(request.RequestData.PageIndex, request.RequestData.PageSize);
 

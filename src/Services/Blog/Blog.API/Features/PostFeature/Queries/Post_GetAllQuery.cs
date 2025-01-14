@@ -27,12 +27,12 @@ public class Post_GetAllQueryHandler : IQueryHandler<Post_GetAllQuery, Result<IE
         var orderCol = request.RequestData.OrderCol;
         var orderDir = request.RequestData.OrderDir;
 
-        IEnumerable<PostDto> categories = await _context.Categories
+        IEnumerable<PostDto> posts = await _context.Posts
                                                    .OrderedListQuery(orderCol, orderDir)
                                                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                                                    .ToListAsync(cancellationToken);
 
-        return Result<IEnumerable<PostDto>>.Success(categories);
+        return Result<IEnumerable<PostDto>>.Success(posts);
     }
 }
 

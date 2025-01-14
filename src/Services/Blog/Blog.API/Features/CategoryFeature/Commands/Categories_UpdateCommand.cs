@@ -32,11 +32,11 @@ public class Categories_UpdateCommandHandler : ICommandHandler<Categories_Update
     }
     public async Task<Result<CategoryDto>> Handle(Categories_UpdateCommand request, CancellationToken cancellationToken)
     {
-        var Categories = await _dataContext.Categories.FindAsync(request.RequestData.Slug);
+        var Categories = await _dataContext.Categories.FindAsync(request.RequestData.Id);
 
         if (Categories == null)
         {
-            throw new ApplicationException("Category not found");
+            throw new ApplicationException($"Không tìm thấy thể loại với ID: {request.RequestData.Id}");
         }
 
         Categories.Slug = request.RequestData.Slug;

@@ -6,6 +6,7 @@ using BuildingBlock.Core.Result;
 using BuildingBlock.CQRS;
 using FluentValidation;
 using BuildingBlock.Core.Validators;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.API.Features.CategoryFeature.Commands;
 
@@ -30,12 +31,13 @@ public class Categories_AddCommandHandler : ICommandHandler<Categories_AddComman
     }
     public async Task<Result<CategoryDto>> Handle(Categories_AddCommand request, CancellationToken cancellationToken)
     {
-        var exist = await _dataContext.Categories.FindAsync(request.RequestData.Slug);
+        var exist = await _dataContext.Categories.FirstOrDefaultAsync(s => s.Slug == request.RequestData.Slug);
 
         if (exist != null)
         {
-            throw new ApplicationException("Slug is already in uses");
+            throw new ApplicationException($"Mã thể loại '{request.RequestData.Slug}' đã được sử dụng");
         }
+
         var Categories = new Category()
         {
             Slug = request.RequestData.Slug,
