@@ -1,6 +1,7 @@
 
 using BuildingBlock.Installers;
 using Job.Application;
+using Job.Application.Services;
 using Job.Infrastructure;
 using Job.Infrastructure.Data;
 using System.Reflection;
@@ -20,6 +21,7 @@ namespace Job.API
             #region DependencyInjection
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddScoped<CVAnalyzerService>();
             #endregion
 
             #region BuildingBlock
