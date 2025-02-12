@@ -13,6 +13,8 @@ public class JobDto
     public int Quantity { get; set; } = 10;
     public DateTime StartDate { get; set; } = DateTime.Now;
     public DateTime EndDate { get; set; } = DateTime.Now.AddDays(30);
+    public DateTime? CreatedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
     public bool Available { get; set; } = true;
     public RepCompanyDto? Company { get; set; }
     public CategoryDto? Category { get; set; }
